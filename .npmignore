@@ -3,4 +3,5 @@
 !.npmignore
 !README.md
 !lib/index.js
+!lib/style.css
 !index.js
