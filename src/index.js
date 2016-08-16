@@ -5,7 +5,6 @@ import {Provider} from 'preact-redux';
 
 import {store} from 'reducers';
 import {App} from 'containers';
-import 'app.scss';
 
 
 class Tracer {
