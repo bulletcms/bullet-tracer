@@ -21,11 +21,13 @@
   },
   "homepage": "https://github.com/bulletcms/bullet-tracer#readme",
   "dependencies": {
+    "immutable": "^3.8.1",
     "preact": "^5.6.0",
     "preact-redux": "^1.0.1",
     "preact-router": "^2.1.0",
     "redux": "^3.5.2",
-    "redux-saga": "^0.11.0"
+    "redux-saga": "^0.11.0",
+    "whatwg-fetch": "^1.0.0"
   },
   "devDependencies": {
     "autoprefixer-loader": "^3.2.0",

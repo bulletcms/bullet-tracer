@@ -3,7 +3,7 @@ const express = require('express');
 
 const testserver = express();
 
-const PORT=8080;
+const PORT=3000;
 
 testserver.use(express.static(path.resolve(__dirname, 'test')));
 testserver.use(express.static(path.resolve(__dirname, 'testdump')));

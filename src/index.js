@@ -1,4 +1,5 @@
 import 'babel-polyfill';
+import 'whatwg-fetch';
 import {h, render, Component} from 'preact';
 import 'app.scss';
 
