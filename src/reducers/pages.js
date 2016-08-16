@@ -19,13 +19,13 @@ const shouldUpdatePage = (state, pageid)=>{
 /////////////
 
 const ACTIONS = {
-  fetchPage: new Symbol('fetchPage'),
-  pageLoading: new Symbol('pageLoading'),
-  fetchSuccess: new Symbol('fetchSuccess'),
-  fetchFail: new Symbol('fetchFail')
+  fetchPage: Symbol('fetchPage'),
+  pageLoading: Symbol('pageLoading'),
+  fetchSuccess: Symbol('fetchSuccess'),
+  fetchFail: Symbol('fetchFail')
 };
 
-const fetchPage = (baseurl, pageid)=>{
+const fetchPageAction = (baseurl, pageid)=>{
   return {
     type: ACTIONS.fetchPage,
     pageid: pageid,
@@ -63,7 +63,7 @@ const fetchPageSagaHelper = function*(action){
   }
 };
 
-const fetchPageSaga = function*(){
+const FetchPageSaga = function*(){
   yield* takeLatest(ACTIONS.fetchPage, fetchPageSagaHelper);
 };
 
@@ -92,3 +92,5 @@ const PagesReducer = (state=defaultState, action)=>{
       return state;
   }
 }
+
+export {PagesReducer, FetchPageSaga, fetchPageAction};
