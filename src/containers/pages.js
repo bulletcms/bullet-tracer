@@ -1,10 +1,12 @@
-import {h, Component} from 'preact';
+import React from 'react';
 
 
-class Pages extends Component{
-  render(props, state){
-    const {url, pageid} = props;
-    const pageroute = (url == '/') ? 'indexroute' : pageid;
+class Pages extends React.Component{
+  render(){
+    console.log(this.props);
+    const {params} = this.props;
+    const {pageid} = params;
+    const pageroute = pageid || 'indexroute';
     return <div>{pageroute}</div>;
   }
 }

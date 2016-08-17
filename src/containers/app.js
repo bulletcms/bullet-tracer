@@ -1,5 +1,4 @@
-import {h, Component} from 'preact';
-import Router from 'preact-router';
+import React from 'react';
 
 import {Pages} from './pages';
 import {DNE} from './dne';
@@ -7,20 +6,13 @@ import {DNE} from './dne';
 import 'styles/app.scss';
 
 
-class App extends Component {
+class App extends React.Component {
   render(){
-    return <Router>
-      <div path="/1/:wildcard?">
-        <div>1-wildcard</div>
-        <Router>
-          <div path="/:wildcard/a">One A</div>
-          <div path="/:wildcard/b">One B</div>
-        </Router>
-      </div>
-      <Pages path="/" />
-      <Pages path="/:pageid" />
-      <DNE default />
-    </Router>;
+    return <div>
+      App Component
+      {this.props.children}
+      End App Component
+    </div>;
   }
 }
 
