@@ -1,5 +1,6 @@
 import {h, Component} from 'preact';
 
+
 class Pages extends Component{
   render(props, state){
     const {url, pageid} = props;
