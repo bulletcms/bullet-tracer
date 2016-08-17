@@ -10,11 +10,11 @@ import 'styles/app.scss';
 class App extends Component {
   render(){
     return <Router>
-      <div path="/1/:wildcard">
+      <div path="/1/:wildcard?">
         <div>1-wildcard</div>
         <Router>
-          <div path="/1/a">One A</div>
-          <div path="/1/b">One B</div>
+          <div path="/:wildcard/a">One A</div>
+          <div path="/:wildcard/b">One B</div>
         </Router>
       </div>
       <Pages path="/" />
