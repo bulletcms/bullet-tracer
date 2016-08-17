@@ -1,13 +1,15 @@
 const path = require('path');
 const express = require('express');
 
-const testserver = express();
+const app = express();
 
 const PORT=3000;
 
-testserver.use(express.static(path.resolve(__dirname, 'test')));
-testserver.use(express.static(path.resolve(__dirname, 'testdump')));
+app.use(express.static(path.resolve(__dirname, 'testdump')));
+app.get('*', (req, res)=>{
+  res.sendFile(path.resolve(__dirname, 'test/index.html'));
+});
 
-testserver.listen(PORT, ()=>{
+app.listen(PORT, ()=>{
   console.log('Test server running on port ' + PORT);
 });
