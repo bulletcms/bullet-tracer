@@ -22,6 +22,7 @@
   "homepage": "https://github.com/bulletcms/bullet-tracer#readme",
   "dependencies": {
     "babel-polyfill": "^6.13.0",
+    "bullet-flash": "^0.1.4",
     "immutable": "^3.8.1",
     "react": "^15.3.0",
     "react-dom": "^15.3.0",
