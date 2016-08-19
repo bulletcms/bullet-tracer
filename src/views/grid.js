@@ -4,6 +4,7 @@ import React from 'react';
 class Grid extends React.Component{
   /**
    * props:
+   *   strict: boolean - no margins between columns
    *   array: boolean - should double grid at 4k
    *   center: boolean - flexbox vertical center
    *   stretch: boolean - flexbox vertical stretch
@@ -11,8 +12,9 @@ class Grid extends React.Component{
   render(){
     const center = (this.props.vcenter) ? " flex-v-center" : "";
     const stretch = (this.props.vstretch) ? " flex-v-stretch" : "";
+    const strict = (this.props.strict) ? "-strict" : "";
     const array = (this.props.array) ? " array" : "";
-    const style = "grid" + array + center + stretch;
+    const style = "grid" + strict + array + center + stretch;
     return <div className={style}>
       {this.props.children}
     </div>;
