@@ -1,14 +1,14 @@
 import React from 'react';
 
 
-class Header extends React.Component{
+class Section extends React.Component{
   render(){
-    return <header>
+    return <section>
       <div class="container">
         {this.props.children}
       </div>
-    </header>;
+    </section>;
   }
 }
 
-export {Header};
+export {Section};
