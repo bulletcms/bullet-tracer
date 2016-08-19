@@ -2,12 +2,52 @@ import React from 'react';
 
 
 class Grid extends React.Component{
+  /**
+   * props:
+   *   array: boolean - should double grid at 4k
+   *   center: boolean - flexbox vertical center
+   *   stretch: boolean - flexbox vertical stretch
+   */
   render(){
-    return <div class="grid">
-      <div class="col col12-2">...</div>
-      <div class="col col12-10">...</div>
+    const center = (this.props.vcenter) ? " flex-v-center" : "";
+    const stretch = (this.props.vstretch) ? " flex-v-stretch" : "";
+    const array = (this.props.array) ? " array" : "";
+    const style = "grid" + array + center + stretch;
+    return <div className={style}>
+      {this.props.children}
     </div>;
   }
 }
 
-export {Grid};
+class Column extends React.Component{
+  /**
+   * props:
+   *   size: integer - numerator
+   *   unit: integer - denominator
+   */
+  render(){
+    const unit = this.props.unit || 12;
+    const style = `col col${unit}-${this.props.size}`;
+    return <div className={style}>
+      {this.props.children}
+    </div>;
+  }
+}
+
+class Row extends React.Component{
+  /**
+   * props:
+   *   center: boolean - flexbox vertical center
+   *   stretch: boolean - flexbox vertical stretch
+   */
+  render(){
+    const center = (this.props.vcenter) ? " flex-v-center" : "";
+    const stretch = (this.props.vstretch) ? " flex-v-stretch" : "";
+    const style = "row" + center + stretch;
+    return <div className={style}>
+      {this.props.children}
+    </div>
+  }
+}
+
+export {Grid, Column, Row};

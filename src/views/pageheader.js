@@ -7,7 +7,7 @@ class PageHeader extends React.Component{
    *   title: string
    */
   render(){
-    return <div class="page-header">
+    return <div className="page-header">
       <h1>{this.props.title}</h1>
     </div>;
   }
