@@ -6,8 +6,8 @@ class Grid extends React.Component{
    * props:
    *   strict: boolean - no margins between columns
    *   array: boolean - should double grid at 4k
-   *   center: boolean - flexbox vertical center
-   *   stretch: boolean - flexbox vertical stretch
+   *   vcenter: boolean - flexbox vertical center
+   *   vstretch: boolean - flexbox vertical stretch
    */
   render(){
     const center = (this.props.vcenter) ? " flex-v-center" : "";
