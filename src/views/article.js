@@ -1,4 +1,5 @@
 import React from 'react';
+import Moment from 'moment';
 
 import {hashCode} from 'utility';
 
@@ -7,16 +8,14 @@ class Article extends React.Component{
   /**
    * props:
    *   title: string
-   *   paragraphs: array of strings
+   *   author: string
+   *   date: unixtime
    */
   render(){
+    const time = Moment(this.props.date);
     return <article>
-      <h2>{this.props.title}</h2>
-      {this.props.paragraphs.map((i)=>{
-        return <p key={hashCode(i)}>
-          {i}
-        </p>;
-      })}
+      <h2>{this.props.title} <br/> <small>By {this.props.author} | <span title={time.format()}>{time.fromNow()}</span></small></h2>
+      {this.props.children}
     </article>;
   }
 }
