@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {hashCode} from 'util';
+import {hashCode} from 'utility';
 
 
 class Article extends React.Component{
@@ -13,7 +13,7 @@ class Article extends React.Component{
     return <article>
       <h2>{this.props.title}</h2>
       {this.props.paragraphs.map((i)=>{
-        return <p key="{hashCode(i)}">
+        return <p key={hashCode(i)}>
           {i}
         </p>;
       })}

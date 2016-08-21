@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {hashCode} from 'util';
+import {hashCode} from 'utility';
 
 
 class Navbar extends React.Component{

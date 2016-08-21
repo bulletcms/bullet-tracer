@@ -1,6 +1,6 @@
 import React from 'react';
 import {Grid} from './grid';
-import {hashCode} from './util';
+import {hashCode} from 'utility';
 
 
 class Sidebar extends React.Component{
