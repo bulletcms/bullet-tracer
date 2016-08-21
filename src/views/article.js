@@ -1,8 +1,6 @@
 import React from 'react';
 import Moment from 'moment';
 
-import {hashCode} from 'utility';
-
 
 class Article extends React.Component{
   /**

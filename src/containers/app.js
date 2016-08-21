@@ -1,8 +1,5 @@
 import React from 'react';
 
-import {Pages} from './pages';
-import {DNE} from './dne';
-
 import 'bullet-flash';
 import 'styles/app.scss';
 
