@@ -17,4 +17,15 @@ export {
   PageHeader,
   Article,
   Card,
-}
+};
+
+export default {
+  Grid, Column, Row,
+  Section,
+  Header, Footer,
+  Navbar,
+  Sidebar, SidebarCounter, SidebarLayout,
+  PageHeader,
+  Article,
+  Card,
+};
