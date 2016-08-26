@@ -12,18 +12,15 @@ class Pages extends React.Component{
     this.props.fetchPage();
   }
 
-  componentWillUpdate(){
-    this.props.fetchPage();
-  }
-
   render(){
+    console.log(this.props);
     if(this.props.loading){
       return <span>loading</span>;
     } else if(this.props.failed){
       return <span>failed</span>;
     } else {
       return <Section>
-        {this.props.content}
+        {JSON.stringify(this.props.content, null, 2)}
       </Section>;
     }
   }
