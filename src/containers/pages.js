@@ -1,10 +1,12 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import {interpreter} from 'bullet-mark';
 
 import {CONFIG} from 'config';
 import {fetchPageAction} from 'reducers/actions';
 import {makeGetPage, getPageId} from 'reducers/selectors';
-import {Section, PageHeader, Article} from 'views';
+import {Section} from 'views';
+import views from 'views';
 
 
 class Pages extends React.Component{
@@ -13,14 +15,13 @@ class Pages extends React.Component{
   }
 
   render(){
-    console.log(this.props);
     if(this.props.loading){
       return <span>loading</span>;
     } else if(this.props.failed){
       return <span>failed</span>;
     } else {
       return <Section>
-        {JSON.stringify(this.props.content, null, 2)}
+        {interpreter(this.props.content, views)}
       </Section>;
     }
   }
