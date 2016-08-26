@@ -9,7 +9,9 @@
   <body>
     <div id="mount"></div>
     <script>
-      const app = new Tracer.Tracer();
+      const app = new Tracer.Tracer({
+        'basePagesUrl': 'http://localhost:8080/api/pages'
+      });
       app.render();
     </script>
   </body>
