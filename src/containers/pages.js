@@ -6,9 +6,8 @@ import {CONFIG} from 'config';
 import {fetchPageAction} from 'reducers/actions';
 import {makeGetPage, getPageId} from 'reducers/selectors';
 import {Section} from 'views';
-import views from 'views';
+import views from 'views/indexlist';
 
-import {Header} from 'views'; // temporary
 
 class Pages extends React.Component{
   componentWillMount(){
@@ -22,12 +21,7 @@ class Pages extends React.Component{
       return <Section><h1>404 <br/> <small>does not exist</small></h1></Section>;
     } else {
       return <div>
-        <Header background="https://c7.staticflickr.com/9/8759/28095871902_3d9a49bfff_k.jpg">
-          <h1>Welcome home, <br/> <small>Kevin</small></h1>
-        </Header>
-        <Section>
           {interpreter(this.props.content, views)}
-        </Section>
       </div>;
     }
   }
