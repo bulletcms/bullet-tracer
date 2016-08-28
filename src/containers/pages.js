@@ -22,7 +22,7 @@ class Pages extends React.Component{
       return <Section><h1>404 <br/> <small>does not exist</small></h1></Section>;
     } else {
       return <div>
-        <Header>
+        <Header background="https://c7.staticflickr.com/9/8759/28095871902_3d9a49bfff_k.jpg">
           <h1>Welcome home, <br/> <small>Kevin</small></h1>
         </Header>
         <Section>
