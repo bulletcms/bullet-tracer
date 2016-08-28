@@ -26,9 +26,9 @@ class Header extends React.Component{
         <div className="container header-child">
           {this.props.children}
         </div>
-        <div className="downIcon">
+        {this.props.background && <div className="downIcon">
           <i className="fa fa-chevron-down" aria-hidden="true"></i>
-        </div>
+        </div>}
       </header>
     </div>;
   }
