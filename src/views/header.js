@@ -10,17 +10,19 @@ class Header extends React.Component{
   render(){
     let headerBackgroundStyle = {};
     let headerStyle = {};
+    let headerClassName = '';
     if(this.props.background){
       headerBackgroundStyle = {
         'background': `url(${this.props.background}) no-repeat center center fixed`,
         'backgroundSize': 'cover'
       };
+      headerClassName = 'full-header';
       headerStyle = {
         'background': `rgba(0, 0, 0, ${this.props.opacity || 0.12})`
       };
     }
     return <div style={headerBackgroundStyle}>
-      <header style={headerStyle}>
+      <header className={headerClassName} style={headerStyle}>
         <div className="container header-child">
           {this.props.children}
         </div>
