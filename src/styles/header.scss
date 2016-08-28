@@ -1,0 +1,19 @@
+header, .hero {
+  min-height: 100vh;
+  position: relative;
+
+  .header-child {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateY(-50%) translateX(-50%);
+  }
+
+  .downIcon{
+    color: #fefefe;
+    position: absolute;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
