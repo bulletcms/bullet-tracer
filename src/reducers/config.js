@@ -8,10 +8,10 @@ import {createSelector} from 'reselect';
 // Rate limiting //
 ///////////////////
 
-const RATE_LIMIT = 2000;
+const RATE_LIMIT = 60000;
 
-const shouldUpdatePage = (state, pageid)=>{
-  return !(state.getIn(['pages', pageid])) || (Date.now() - state.get('lastUpdate') > RATE_LIMIT);
+const shouldUpdateConfig = (state)=>{
+  return !(state.get('nav')) || (Date.now() - state.get('lastUpdate') > RATE_LIMIT);
 };
 
 
@@ -20,26 +20,25 @@ const shouldUpdatePage = (state, pageid)=>{
 /////////////
 
 const ACTIONS = {
-  fetchPage: Symbol('fetchPage'),
-  pageLoading: Symbol('pageLoading'),
+  fetchConfig: Symbol('fetchConfig'),
+  configLoading: Symbol('configLoading'),
   fetchSuccess: Symbol('fetchSuccess'),
   fetchFail: Symbol('fetchFail')
 };
 
-const fetchPageAction = (baseurl, pageid)=>{
+const fetchConfigAction = (baseurl)=>{
   return {
-    type: ACTIONS.fetchPage,
-    pageid: pageid,
+    type: ACTIONS.fetchConfig,
     baseurl: baseurl
   };
 };
 
-const fetchPageSagaHelper = function*(action){
+const fetchConfigSagaHelper = function*(action){
   yield put({
-    type: ACTIONS.pageLoading
+    type: ACTIONS.configLoading
   });
 
-  const state = yield select((state)=>{return state.Pages;});
+  const state = yield select((state)=>{return state.Config;});
 
   if(shouldUpdatePage(state, action.pageid)){
     try {
@@ -59,13 +58,13 @@ const fetchPageSagaHelper = function*(action){
     yield put({
       type: ACTIONS.fetchSuccess,
       pageid: action.pageid,
-      payload: state.getIn(['pages', action.pageid])
+      payload: state.get('nav')
     });
   }
 };
 
-const FetchPageSaga = function*(){
-  yield* takeLatest(ACTIONS.fetchPage, fetchPageSagaHelper);
+const FetchConfigSaga = function*(){
+  yield* takeLatest(ACTIONS.fetchConfig, fetchConfigSagaHelper);
 };
 
 
@@ -76,14 +75,14 @@ const FetchPageSaga = function*(){
 const defaultState = Immutable.fromJS({
   loading: false,
   failed: false,
-  pages: Immutable.Map({}),
+  nav: false,
   lastUpdate: Date.now()
 });
 
 
-const Pages = (state=defaultState, action)=>{
+const Config = (state=defaultState, action)=>{
   switch(action.type){
-    case ACTIONS.pageLoading:
+    case ACTIONS.configLoading:
       return state.set('loading', true).set('failed', false);
     case ACTIONS.fetchSuccess:
       return state.set('loading', false).set('failed', false).set('lastUpdate', Date.now()).setIn(['pages', action.pageid], action.payload);
