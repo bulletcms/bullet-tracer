@@ -105,7 +105,7 @@ const getPageLoading = (state, props)=>{
 
 const getPageFailed = (state, props)=>{
   return state.Pages.get('failed');
-}
+};
 
 const getPageId = (state, props)=>{
   const {params, location} = props;

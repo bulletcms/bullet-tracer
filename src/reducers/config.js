@@ -40,16 +40,16 @@ const fetchConfigSagaHelper = function*(action){
 
   const state = yield select((state)=>{return state.Config;});
 
-  if(shouldUpdatePage(state, action.pageid)){
+  if(shouldUpdateConfig(state)){
     try {
-      const res = yield call(fetch, action.baseurl + '/' + action.pageid);
-      const payload = yield call([res, res.json]);
+      const resNav = yield call(fetch, action.baseurl + '/navigation');
+      const payloadNav = yield call([resNav, resNav.json]);
       yield put({
         type: ACTIONS.fetchSuccess,
-        pageid: action.pageid,
-        payload: payload
+        payloadNav: payloadNav
       });
     } catch(err) {
+      console.log(err);
       yield put({
         type: ACTIONS.fetchFail
       });
@@ -57,8 +57,7 @@ const fetchConfigSagaHelper = function*(action){
   } else {
     yield put({
       type: ACTIONS.fetchSuccess,
-      pageid: action.pageid,
-      payload: state.get('nav')
+      payloadNav: state.get('nav')
     });
   }
 };
@@ -85,7 +84,7 @@ const Config = (state=defaultState, action)=>{
     case ACTIONS.configLoading:
       return state.set('loading', true).set('failed', false);
     case ACTIONS.fetchSuccess:
-      return state.set('loading', false).set('failed', false).set('lastUpdate', Date.now()).setIn(['pages', action.pageid], action.payload);
+      return state.set('loading', false).set('failed', false).set('lastUpdate', Date.now()).set('nav', action.payloadNav);
     case ACTIONS.fetchFail:
       return state.set('loading', false).set('failed', true);
     default:
@@ -98,46 +97,38 @@ const Config = (state=defaultState, action)=>{
 // Selector //
 //////////////
 
-const getPageLoading = (state, props)=>{
-  return state.Pages.get('loading');
+const getConfigLoading = (state)=>{
+  return state.Config.get('loading');
 };
 
-const getPageFailed = (state, props)=>{
-  return state.Pages.get('failed');
-}
-
-const getPageId = (state, props)=>{
-  const {params, location} = props;
-  const {pageid} = params;
-  return (location.pathname == '/') ? 'indexroute' : pageid;
+const getConfigFailed = (state)=>{
+  return state.Config.get('failed');
 };
 
-const getPageContent = (state, props)=>{
-  return state.Pages.getIn(['pages', getPageId(state, props)]);
+const getNavContent = (state)=>{
+  return state.Config.get('nav');
 };
 
-const makeGetPage = ()=>{
+const makeGetNav = ()=>{
   return createSelector(
-    [getPageLoading, getPageFailed, getPageContent],
-    (loading, failed, content)=>{
+    [getConfigLoading, getConfigFailed, getNavContent],
+    (loading, failed, navContent)=>{
       if(loading){
         return {loading: true};
       } else if(failed){
         return {loading: false, failed: true};
       }
-      if(content){
+      if(navContent){
         return {
           loading: false,
           failed: false,
-          title: content.title,
-          content: content.content
+          navContent: navContent
         };
       } else {
         return {
           loading: false,
           failed: false,
-          title: false,
-          content: false
+          navContent: false
         };
       }
     }
@@ -145,4 +136,4 @@ const makeGetPage = ()=>{
 };
 
 
-export {Pages, FetchPageSaga, fetchPageAction, makeGetPage, getPageId};
+export {Config, FetchConfigSaga, fetchConfigAction, makeGetNav};
