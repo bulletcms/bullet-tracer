@@ -49,7 +49,6 @@ const fetchConfigSagaHelper = function*(action){
         payloadNav: payloadNav
       });
     } catch(err) {
-      console.log(err);
       yield put({
         type: ACTIONS.fetchFail
       });

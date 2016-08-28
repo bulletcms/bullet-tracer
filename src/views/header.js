@@ -14,6 +14,9 @@ class Header extends React.Component{
     if(this.props.background){
       headerBackgroundStyle = {
         'background': `url(${this.props.background}) no-repeat center center fixed`,
+        'WebkitBackgroundSize': 'cover',
+        'MozBackgroundSize': 'cover',
+        'OBackgroundSize': 'cover',
         'backgroundSize': 'cover'
       };
       headerClassName = 'full-header';
