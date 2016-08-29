@@ -14,6 +14,10 @@ class Pages extends React.Component{
     this.props.fetchPage();
   }
 
+  componentWillUpdate(nextProps){
+    this.props.fetchPage(nextProps);
+  }
+
   render(){
     if(this.props.loading){
       return <Section><h1>loading</h1></Section>;
@@ -36,8 +40,8 @@ const makeMapStateToProps = ()=>{
 
 const mapDispatchToProps = (dispatch, props)=>{
   return {
-    fetchPage: ()=>{
-      dispatch(fetchPageAction(CONFIG.retrieve('basePagesUrl'), getPageId(null, props)));
+    fetchPage: (nextProps=false)=>{
+      dispatch(fetchPageAction(CONFIG.retrieve('basePagesUrl'), getPageId(null, nextProps || props)));
     }
   };
 };

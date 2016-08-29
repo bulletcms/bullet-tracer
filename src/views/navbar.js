@@ -13,18 +13,18 @@ class Navbar extends React.Component{
    */
   render(){
     return <nav>
-      <div class="nav-spacer"></div>
-      <div class="nav-container">
-        <div class="container">
-          <div class="brand brand-padded"><Link to={this.props.brand[1]}><img src={this.props.brand[0]}/></Link></div>
-          <ul class="nav-list">
+      <div className="nav-spacer"></div>
+      <div className="nav-container">
+        <div className="container">
+          <div className="brand brand-padded"><Link to={this.props.brand[1]}><img src={this.props.brand[0]}/></Link></div>
+          <ul className="nav-list">
             {this.props.list.map((i)=>{
               return <li key={hashCode(i[0]+i[1])}>
                 <Link to={i[1]}>{i[0]}</Link>
               </li>;
             })}
           </ul>
-          <ul class="nav-list right">
+          <ul className="nav-list right">
             {this.props.listRight.map((i)=>{
               return <li key={hashCode(i[0]+i[1])}>
                 <Link to={i[1]}>{i[0]}</Link>

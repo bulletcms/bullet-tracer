@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import {CONFIG} from 'config';
 import {fetchConfigAction} from 'reducers/actions';
 import {makeGetNav} from 'reducers/selectors';
+import {Navbar} from 'views';
 
 import 'bullet-flash';
 import 'styles/app.scss';
@@ -16,9 +17,8 @@ class App extends React.Component {
 
   render(){
     return <div>
-      {this.props.loading}
-      {this.props.failed}
-      {JSON.stringify(this.props.navContent, null, 2)}
+      {!(this.props.loading || this.props.failed) && this.props.navContent &&
+        <Navbar brand={this.props.navContent.brand} list={this.props.navContent.list} listRight={this.props.navContent.listRight}/>}
       {this.props.children}
     </div>;
   }
