@@ -51,9 +51,18 @@ const fetchPageSagaHelper = function*(action){
         payload: payload
       });
     } catch(err) {
-      yield put({
-        type: ACTIONS.fetchFail
-      });
+      const cached = state.getIn(['pages', action.pageid]);
+      if(cached){
+        yield put({
+          type: ACTIONS.fetchSuccess,
+          pageid: action.pageid,
+          payload: cached
+        });
+      } else {
+        yield put({
+          type: ACTIONS.fetchFail
+        });
+      }
     }
   } else {
     yield put({

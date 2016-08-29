@@ -49,9 +49,17 @@ const fetchConfigSagaHelper = function*(action){
         payloadNav: payloadNav
       });
     } catch(err) {
-      yield put({
-        type: ACTIONS.fetchFail
-      });
+      let cached = state.get('nav');
+      if(cached){
+        yield put({
+          type: ACTIONS.fetchSuccess,
+          payloadNav: cached
+        });
+      } else {
+        yield put({
+          type: ACTIONS.fetchFail
+        });
+      }
     }
   } else {
     yield put({
