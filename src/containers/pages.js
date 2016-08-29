@@ -14,6 +14,10 @@ class Pages extends React.Component{
     this.props.fetchPage();
   }
 
+  shouldComponentUpdate(nextProps, nextState){
+    return getPageId(null, nextProps) !== getPageId(null, this.props) || nextProps.content !== this.props.content;
+  }
+
   componentWillUpdate(nextProps){
     this.props.fetchPage(nextProps);
   }
