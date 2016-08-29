@@ -7,7 +7,7 @@ module.exports = {
   context: path.resolve(__dirname, 'src'),
   entry: {
     index: './index.js' ,
-    dashboard: './dashboard.js'
+    dashboard: './dash.js'
   },
   target: 'web',
   output: {
