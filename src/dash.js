@@ -6,7 +6,7 @@ import {Provider} from 'react-redux';
 
 import {CONFIG} from 'dashboard/config';
 import {store} from 'dashboard/reducers';
-import {routes} from 'routes';
+import {routes} from 'dashboard/routes';
 
 class Dashboard {
   constructor(config){
