@@ -1,4 +1,6 @@
 import React from 'react';
+import {Link} from 'react-router';
+
 import {Grid} from './grid';
 import {hashCode} from 'utility';
 
@@ -12,14 +14,14 @@ class Sidebar extends React.Component{
   render(){
     return <aside>
       {this.props.title &&
-        <div class="title">
+        <div className="title">
           <h2>{this.props.title}</h2>
         </div>
       }
-      <ul class="list">
+      <ul className="list">
         {this.props.list.map((i)=>{
           return <li className="list-item" key={hashCode(i[0]+i[1])}>
-            <a href={i[1]}>{i[0]}</a>
+            <Link to={i[1]}>{i[0]}</Link>
           </li>;
         })}
       </ul>
@@ -29,7 +31,7 @@ class Sidebar extends React.Component{
 
 class SidebarCounter extends React.Component{
   render(){
-    return <div class="counter-aside">
+    return <div className="counter-aside">
       {this.props.children}
     </div>;
   }

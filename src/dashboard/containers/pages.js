@@ -2,29 +2,18 @@ import React from 'react';
 import {connect} from 'react-redux';
 
 import {CONFIG} from 'dashboard/config';
-import {Section, SidebarLayout} from 'views';
-
-import 'bullet-flash';
-import 'styles/app.scss';
 
 
-class DashApp extends React.Component {
+class Pages extends React.Component {
   componentWillMount(){
     // this.props.fetchConfig();
   }
 
   render(){
-    const sidebarList = [
-      ['Home', '/'],
-      ['Pages', '/pages'],
-    ];
-
+    console.log('i am rendering');
     return <div>
-      <SidebarLayout title="Dashboard" list={sidebarList}>
-        <Section>
-          {this.props.children}
-        </Section>
-      </SidebarLayout>
+      <h1>Pages</h1>
+      Hello World!
     </div>;
   }
 }
@@ -49,4 +38,4 @@ class DashApp extends React.Component {
 //   mapDispatchToProps
 // )(App);
 
-export {DashApp};
+export {Pages};
