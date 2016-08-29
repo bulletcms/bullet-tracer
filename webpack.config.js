@@ -6,11 +6,14 @@ const extractSass = new ExtractTextPlugin('style.css', {allChunks: false});
 
 module.exports = {
   context: path.resolve(__dirname, 'src'),
-  entry: [ './index.js' ],
+  entry: {
+    index: './index.js' ,
+    dashboard: './dashboard.js'
+  },
   target: 'web',
   output: {
     path: path.resolve(__dirname, 'lib'),
-    filename: 'index.js',
+    filename: '[name].js',
     libraryTarget: 'commonjs2'
   },
   module: {

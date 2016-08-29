@@ -14,4 +14,4 @@ class Config{
 
 const CONFIG = new Config();
 
-export {CONFIG};
+export {CONFIG, Config};

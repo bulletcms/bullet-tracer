@@ -5,11 +5,14 @@ const extractSass = new ExtractTextPlugin('style.css', {allChunks: false});
 
 module.exports = {
   context: path.resolve(__dirname, 'src'),
-  entry: [ './index.js' ],
+  entry: {
+    index: './index.js' ,
+    dashboard: './dashboard.js'
+  },
   target: 'web',
   output: {
     path: path.resolve(__dirname, 'testdump'),
-    filename: 'index.js',
+    filename: '[name].js',
     libraryTarget: 'var',
     library: 'Tracer'
   },
