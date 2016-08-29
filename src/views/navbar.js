@@ -12,7 +12,7 @@ class Navbar extends React.Component{
    *   listRight: array of string url tuples
    */
   render(){
-    return <nav>
+    return <nav className="docked">
       <div className="nav-spacer"></div>
       <div className="nav-container">
         <div className="container">
