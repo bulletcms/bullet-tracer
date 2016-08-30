@@ -8,7 +8,7 @@ import {makeGetPage, makeGetPagelist} from 'dashboard/reducers/selectors';
 
 class Pages extends React.Component {
   componentWillMount(){
-    // this.props.fetchConfig();
+    this.props.fetchPagelist();
   }
 
   // shouldComponentUpdate(nextProps, nextState){
@@ -22,7 +22,7 @@ class Pages extends React.Component {
   render(){
     return <div>
       <h1>Pages</h1>
-      Hello World!
+      {JSON.stringify(this.props.pagelist)}
     </div>;
   }
 }

@@ -1,7 +1,7 @@
 import {createStore, combineReducers, applyMiddleware} from 'redux';
 import createSagaMiddleware from 'redux-saga';
 
-import {Pages, FetchPageSaga} from './pages';
+import {Pages, FetchPageSaga, FetchPagelistSaga} from './pages';
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -11,5 +11,6 @@ const store = createStore(
 );
 
 sagaMiddleware.run(FetchPageSaga);
+sagaMiddleware.run(FetchPagelistSaga);
 
 export {store};

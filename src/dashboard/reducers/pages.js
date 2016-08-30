@@ -95,7 +95,7 @@ const fetchPagelistAction = (baseurl)=>{
   };
 };
 
-const fetchPagelistSagaHelper = function*(){
+const fetchPagelistSagaHelper = function*(action){
   yield put({
     type: ACTIONS.pagelistLoading
   });
@@ -244,4 +244,4 @@ const makeGetPagelist = ()=>{
 };
 
 
-export {Pages, FetchPageSaga, fetchPageAction, fetchPagelistAction, makeGetPage, makeGetPagelist};
+export {Pages, FetchPageSaga, FetchPagelistSaga, fetchPageAction, fetchPagelistAction, makeGetPage, makeGetPagelist};
