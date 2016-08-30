@@ -1,3 +1,3 @@
-import {fetchPageAction} from './pages';
+import {fetchPageAction, fetchPagelistAction} from './pages';
 
-export {fetchPageAction};
+export {fetchPageAction, fetchPagelistAction};

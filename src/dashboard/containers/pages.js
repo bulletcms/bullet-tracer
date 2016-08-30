@@ -2,6 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 
 import {CONFIG} from 'dashboard/config';
+import {fetchPageAction, fetchPagelistAction} from 'dashboard/reducers/actions';
 import {makeGetPage, makeGetPagelist} from 'dashboard/reducers/selectors';
 
 
@@ -37,17 +38,20 @@ const makeMapStateToProps = ()=>{
   };
 };
 
-// const mapDispatchToProps = (dispatch, props)=>{
-//   return {
-//     fetchConfig: ()=>{
-//       dispatch(fetchConfigAction(CONFIG.retrieve('baseConfigUrl')));
-//     }
-//   };
-// };
-//
-// App = connect(
-//   makeMapStateToProps,
-//   mapDispatchToProps
-// )(App);
+const mapDispatchToProps = (dispatch)=>{
+  return {
+    fetchPage: (pageid, method=false, body=false)=>{
+      dispatch(fetchPageAction(CONFIG.retrieve('basePagesUrl'), pageid, method, body));
+    },
+    fetchPagelist: ()=>{
+      dispatch(fetchPagelistAction(CONFIG.retrieve('basePagesUrl')));
+    }
+  };
+};
+
+Pages = connect(
+  makeMapStateToProps,
+  mapDispatchToProps
+)(Pages);
 
 export {Pages};
