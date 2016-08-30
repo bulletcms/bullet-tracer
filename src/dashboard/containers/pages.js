@@ -12,6 +12,7 @@ class Pages extends React.Component {
   }
 
   render(){
+    console.log(this.props.page.content);
     return <div>
       <h1>Pages</h1>
       {this.props.pagelist.loading && <h2>loading</h2>}
@@ -23,6 +24,13 @@ class Pages extends React.Component {
               return <li onClick={()=>{this.props.fetchPage(i)}} key={i}>{i}</li>;
             })}
           </ul>
+        </div>
+      }
+      {this.props.page.loading && <h2>loading</h2>}
+      {this.props.page.failed && <h2>failed</h2>}
+      {(!this.props.page.loading && !this.props.page.failed) && this.props.page.content &&
+        <div>
+          {JSON.stringify(this.props.page.content)}
         </div>
       }
     </div>;
