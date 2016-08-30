@@ -184,23 +184,61 @@ const makeGetPage = ()=>{
     [getPageLoading, getPageFailed, getPageContent],
     (loading, failed, content)=>{
       if(loading){
-        return {loading: true};
+        return {pageLoading: true};
       } else if(failed){
-        return {loading: false, failed: true};
+        return {pageLoading: false, pageFailed: true};
       }
       if(content){
         return {
-          loading: false,
-          failed: false,
-          title: content.title,
-          content: content.content
+          pageLoading: false,
+          pageFailed: false,
+          pageTitle: content.title,
+          pageContent: content.content
         };
       } else {
         return {
-          loading: false,
-          failed: false,
-          title: false,
-          content: false
+          pageLoading: false,
+          pageFailed: false,
+          pageTitle: false,
+          pageContent: false
+        };
+      }
+    }
+  );
+};
+
+const getPagelistLoading = (state, props)=>{
+  return state.Pages.get('pagelistLoading');
+};
+
+const getPagelistFailed = (state, props)=>{
+  return state.Pages.get('pagelistFailed');
+};
+
+const getPagelistContent = (state, props)=>{
+  return state.Pages.get('pagelist');
+};
+
+const makeGetPagelist = ()=>{
+  return createSelector(
+    [getPagelistLoading, getPagelistFailed, getPagelistContent],
+    (loading, failed, content)=>{
+      if(loading){
+        return {pageLoading: true};
+      } else if(failed){
+        return {pageLoading: false, pageFailed: true};
+      }
+      if(content){
+        return {
+          pageLoading: false,
+          pageFailed: false,
+          pagelistContent: content
+        };
+      } else {
+        return {
+          pageLoading: false,
+          pageFailed: false,
+          pagelistContent: false
         };
       }
     }
@@ -208,4 +246,4 @@ const makeGetPage = ()=>{
 };
 
 
-export {Pages, FetchPageSaga, fetchPageAction, fetchPagelistAction};
+export {Pages, FetchPageSaga, fetchPageAction, fetchPagelistAction, makeGetPage, makeGetPagelist};
