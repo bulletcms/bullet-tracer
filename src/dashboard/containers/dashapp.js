@@ -5,7 +5,7 @@ import {CONFIG} from 'dashboard/config';
 import {Section, SidebarLayout} from 'views';
 
 import 'bullet-flash';
-import 'styles/app.scss';
+import 'styles/dashboard.scss';
 
 
 class DashApp extends React.Component {

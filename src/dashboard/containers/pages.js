@@ -11,18 +11,20 @@ class Pages extends React.Component {
     this.props.fetchPagelist();
   }
 
-  // shouldComponentUpdate(nextProps, nextState){
-  //   return getPageId(null, nextProps) !== getPageId(null, this.props) || nextProps.content !== this.props.content;
-  // }
-  //
-  // componentWillUpdate(nextProps){
-  //   this.props.fetchPage(nextProps);
-  // }
-
   render(){
     return <div>
       <h1>Pages</h1>
-      {JSON.stringify(this.props.pagelist)}
+      {this.props.pagelist.loading && <h2>loading</h2>}
+      {this.props.pagelist.failed && <h2>failed</h2>}
+      {(!this.props.pagelist.loading && !this.props.pagelist.failed) && this.props.pagelist.content &&
+        <div>
+          <ul className="tablist">
+            <li>one</li>
+            <li>two</li>
+            <li>three</li>
+          </ul>
+        </div>
+      }
     </div>;
   }
 }
