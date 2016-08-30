@@ -15,7 +15,11 @@ const ACTIONS = {
   fetchFail: Symbol('fetchFail'),
   requestLoading: Symbol('requestLoading'),
   requestSuccess: Symbol('requestSuccess'),
-  requestFail: Symbol('requestFail')
+  requestFail: Symbol('requestFail'),
+  fetchPagelist: Symbol('fetchPagelist'),
+  pagelistLoading: Symbol('pagelistLoading'),
+  pagelistSuccess: Symbol('pagelistSuccess'),
+  pagelistFail: Symbol('pagelistFail')
 };
 
 const fetchPageAction = (baseurl, pageid, method=false, body=false)=>{
@@ -84,6 +88,36 @@ const FetchPageSaga = function*(){
   yield* takeLatest(ACTIONS.fetchPage, fetchPageSagaHelper);
 };
 
+const fetchPagelistAction = (baseurl)=>{
+  return {
+    type: ACTIONS.fetchPagelist,
+    baseurl: baseurl
+  };
+};
+
+const fetchPagelistSagaHelper = function*(){
+  yield put({
+    type: ACTIONS.pagelistLoading
+  });
+
+  try {
+    const res = yield call(fetch, action.baseurl);
+    const payload = yield call([res, res.json]);
+    yield put({
+      type: ACTIONS.pagelistSuccess,
+      payload: payload
+    });
+  } catch(err) {
+    yield put({
+      type: ACTIONS.pagelistFail
+    });
+  }
+};
+
+const FetchPagelistSaga = function*(){
+  yield* takeLatest(ACTIONS.fetchPagelist, fetchPagelistSagaHelper);
+};
+
 
 /////////////
 // Reducer //
@@ -96,7 +130,10 @@ const defaultState = Immutable.fromJS({
   lastUpdate: Date.now(),
   requestLoading: false,
   requestFailed: false,
-  request: false
+  request: false,
+  pagelistLoading: false,
+  pagelistFailed: false,
+  pagelist: false
 });
 
 
@@ -114,6 +151,12 @@ const Pages = (state=defaultState, action)=>{
       return state.set('requestLoading', false).set('requestFailed', false).set('request', action.payload);
     case ACTIONS.requestFail:
       return state.set('requestLoading', false).set('requestFailed', true);
+    case ACTIONS.pagelistLoading:
+      return state.set('pagelistLoading', true).set('pagelistFailed', false);
+    case ACTIONS.pagelistSuccess:
+      return state.set('pagelistLoading', false).set('pagelistFailed', false).set('pagelist', action.payload);
+    case ACTIONS.pagelistFail:
+      return state.set('pagelistLoading', false).set('pagelistFailed', true);
     default:
       return state;
   }
@@ -165,4 +208,4 @@ const makeGetPage = ()=>{
 };
 
 
-export {Pages, FetchPageSaga, fetchPageAction};
+export {Pages, FetchPageSaga, fetchPageAction, fetchPagelistAction};
