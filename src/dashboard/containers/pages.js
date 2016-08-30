@@ -19,9 +19,9 @@ class Pages extends React.Component {
       {(!this.props.pagelist.loading && !this.props.pagelist.failed) && this.props.pagelist.content &&
         <div>
           <ul className="tablist">
-            <li>one</li>
-            <li>two</li>
-            <li>three</li>
+            {this.props.pagelist.content.map((i)=>{
+              return <li onClick={()=>{this.props.fetchPage(i)}}>{i}</li>;
+            })}
           </ul>
         </div>
       }
