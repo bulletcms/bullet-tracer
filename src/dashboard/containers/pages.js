@@ -9,8 +9,15 @@ class Pages extends React.Component {
     // this.props.fetchConfig();
   }
 
+  // shouldComponentUpdate(nextProps, nextState){
+  //   return getPageId(null, nextProps) !== getPageId(null, this.props) || nextProps.content !== this.props.content;
+  // }
+  //
+  // componentWillUpdate(nextProps){
+  //   this.props.fetchPage(nextProps);
+  // }
+
   render(){
-    console.log('i am rendering');
     return <div>
       <h1>Pages</h1>
       Hello World!

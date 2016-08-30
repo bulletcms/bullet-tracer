@@ -124,7 +124,45 @@ const Pages = (state=defaultState, action)=>{
 // Selector //
 //////////////
 
+const getPageLoading = (state, props)=>{
+  return state.Pages.get('pageLoading');
+};
 
+const getPageFailed = (state, props)=>{
+  return state.Pages.get('pageFailed');
+};
+
+const getPageContent = (state, props)=>{
+  return state.Pages.get('page');
+};
+
+const makeGetPage = ()=>{
+  return createSelector(
+    [getPageLoading, getPageFailed, getPageContent],
+    (loading, failed, content)=>{
+      if(loading){
+        return {loading: true};
+      } else if(failed){
+        return {loading: false, failed: true};
+      }
+      if(content){
+        return {
+          loading: false,
+          failed: false,
+          title: content.title,
+          content: content.content
+        };
+      } else {
+        return {
+          loading: false,
+          failed: false,
+          title: false,
+          content: false
+        };
+      }
+    }
+  );
+};
 
 
 export {Pages, FetchPageSaga, fetchPageAction};
