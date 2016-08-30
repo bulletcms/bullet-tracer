@@ -167,15 +167,15 @@ const Pages = (state=defaultState, action)=>{
 // Selector //
 //////////////
 
-const getPageLoading = (state, props)=>{
+const getPageLoading = (state)=>{
   return state.Pages.get('pageLoading');
 };
 
-const getPageFailed = (state, props)=>{
+const getPageFailed = (state)=>{
   return state.Pages.get('pageFailed');
 };
 
-const getPageContent = (state, props)=>{
+const getPageContent = (state)=>{
   return state.Pages.get('page');
 };
 
@@ -184,38 +184,36 @@ const makeGetPage = ()=>{
     [getPageLoading, getPageFailed, getPageContent],
     (loading, failed, content)=>{
       if(loading){
-        return {pageLoading: true};
+        return {loading: true};
       } else if(failed){
-        return {pageLoading: false, pageFailed: true};
+        return {loading: false, failed: true};
       }
       if(content){
         return {
-          pageLoading: false,
-          pageFailed: false,
-          pageTitle: content.title,
-          pageContent: content.content
+          loading: false,
+          failed: false,
+          content: content
         };
       } else {
         return {
-          pageLoading: false,
-          pageFailed: false,
-          pageTitle: false,
-          pageContent: false
+          loading: false,
+          failed: false,
+          content: false
         };
       }
     }
   );
 };
 
-const getPagelistLoading = (state, props)=>{
+const getPagelistLoading = (state)=>{
   return state.Pages.get('pagelistLoading');
 };
 
-const getPagelistFailed = (state, props)=>{
+const getPagelistFailed = (state)=>{
   return state.Pages.get('pagelistFailed');
 };
 
-const getPagelistContent = (state, props)=>{
+const getPagelistContent = (state)=>{
   return state.Pages.get('pagelist');
 };
 
@@ -224,21 +222,21 @@ const makeGetPagelist = ()=>{
     [getPagelistLoading, getPagelistFailed, getPagelistContent],
     (loading, failed, content)=>{
       if(loading){
-        return {pageLoading: true};
+        return {loading: true};
       } else if(failed){
-        return {pageLoading: false, pageFailed: true};
+        return {loading: false, failed: true};
       }
       if(content){
         return {
-          pageLoading: false,
-          pageFailed: false,
-          pagelistContent: content
+          loading: false,
+          failed: false,
+          content: content
         };
       } else {
         return {
-          pageLoading: false,
-          pageFailed: false,
-          pagelistContent: false
+          loading: false,
+          failed: false,
+          content: false
         };
       }
     }

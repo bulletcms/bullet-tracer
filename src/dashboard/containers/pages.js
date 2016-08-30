@@ -2,6 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 
 import {CONFIG} from 'dashboard/config';
+import {makeGetPage, makeGetPagelist} from 'dashboard/reducers/selectors';
 
 
 class Pages extends React.Component {
@@ -25,13 +26,17 @@ class Pages extends React.Component {
   }
 }
 
-// const makeMapStateToProps = ()=>{
-//   const getNav = makeGetNav();
-//   return (state)=>{
-//     return getNav(state);
-//   };
-// };
-//
+const makeMapStateToProps = ()=>{
+  const getPage = makeGetPage();
+  const getPagelist = makeGetPagelist();
+  return (state)=>{
+    return {
+      page: getPage(state),
+      pagelist: getPagelist(state)
+    };
+  };
+};
+
 // const mapDispatchToProps = (dispatch, props)=>{
 //   return {
 //     fetchConfig: ()=>{
