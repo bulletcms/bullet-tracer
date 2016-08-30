@@ -12,7 +12,6 @@ class Pages extends React.Component {
   }
 
   render(){
-    console.log(this.props.page.content);
     return <div>
       <h1>Pages</h1>
       {this.props.pagelist.loading && <h2>loading</h2>}

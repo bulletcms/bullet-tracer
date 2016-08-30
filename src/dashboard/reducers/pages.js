@@ -43,7 +43,7 @@ const fetchPageSagaHelper = function*(action){
     });
   }
 
-  let options = null;
+  let options = false;
   if(action.method){
     options = {
       method: action.method,
@@ -56,7 +56,12 @@ const fetchPageSagaHelper = function*(action){
   }
 
   try {
-    const res = yield call(fetch, action.baseurl + '/' + action.pageid, options);
+    let res;
+    if(options){
+      res = yield call(fetch, action.baseurl + '/' + action.pageid, options);
+    } else {
+      res = yield call(fetch, action.baseurl + '/' + action.pageid);
+    }
     const payload = yield call([res, res.json]);
     if(action.method){
       yield put({
@@ -142,7 +147,7 @@ const Pages = (state=defaultState, action)=>{
     case ACTIONS.pageLoading:
       return state.set('pageLoading', true).set('pageFailed', false);
     case ACTIONS.fetchSuccess:
-      return state.set('pageLoading', false).set('pageFailed', false).set('lastUpdate', Date.now()).set('pages', action.payload);
+      return state.set('pageLoading', false).set('pageFailed', false).set('lastUpdate', Date.now()).set('page', action.payload);
     case ACTIONS.fetchFail:
       return state.set('pageLoading', false).set('pageFailed', true);
     case ACTIONS.requestLoading:
