@@ -1,9 +1,18 @@
+@import '../../node_modules/bullet-flash/src/main';
+
 .tablist {
   list-style: none;
   padding: 0;
   margin: 0;
 
   li {
-    padding: 16px;
+    display: inline-block;
+    margin: 4px 8px;
+    color: $color-secondary;
+
+    &:hover {
+      text-decoration: underline;
+      cursor: pointer;
+    }
   }
 }

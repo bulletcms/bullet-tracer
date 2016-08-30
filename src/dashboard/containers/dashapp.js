@@ -4,7 +4,6 @@ import {connect} from 'react-redux';
 import {CONFIG} from 'dashboard/config';
 import {Section, SidebarLayout} from 'views';
 
-import 'bullet-flash';
 import 'styles/dashboard.scss';
 
 
