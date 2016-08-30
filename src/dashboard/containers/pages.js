@@ -20,7 +20,7 @@ class Pages extends React.Component {
         <div>
           <ul className="tablist">
             {this.props.pagelist.content.map((i)=>{
-              return <li onClick={()=>{this.props.fetchPage(i)}}>{i}</li>;
+              return <li onClick={()=>{this.props.fetchPage(i)}} key={i}>{i}</li>;
             })}
           </ul>
         </div>
