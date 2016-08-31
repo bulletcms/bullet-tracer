@@ -6,8 +6,41 @@ import {fetchPageAction, fetchPagelistAction} from 'dashboard/reducers/actions';
 import {makeGetPage, makeGetPagelist} from 'dashboard/reducers/selectors';
 import {Input, Textarea} from 'views';
 
+const h = React.createElement;
+
+
+class PageDisplay extends React.Component {
+  render(){
+    return <div>
+      <h4>pageid</h4>
+      <span>{this.props.pageid}</span>
+      <h4>title</h4>
+      <span>{this.props.title}</span>
+      <h4>tags</h4>
+      <span>{this.props.tags.join(', ')}</span>
+      <h4>content</h4>
+      <pre>{this.props.content}</pre>
+    </div>;
+  }
+}
+
+class PageEdit extends React.Component {
+  render(){
+    return <div>
+      <Input label="pageid" value={this.props.pageid} handleBlur={(value)=>{console.log(value);}}/>
+      <Input label="title" value={this.props.title}/>
+      <Input label="tags" value={this.props.tags.join(', ')}/>
+      <Textarea label="content" rows={12} value={this.props.content}/>
+    </div>;
+  }
+}
 
 class Pages extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {edit: false};
+  }
+
   componentWillMount(){
     this.props.fetchPagelist();
   }
@@ -21,7 +54,7 @@ class Pages extends React.Component {
         <div>
           <ul className="tablist">
             {this.props.pagelist.content.map((i)=>{
-              return <li onClick={()=>{this.props.fetchPage(i)}} key={i}>{i}</li>;
+              return <li onClick={()=>{this.setState({edit: false}); this.props.fetchPage(i);}} key={i}>{i}</li>;
             })}
           </ul>
         </div>
@@ -30,10 +63,12 @@ class Pages extends React.Component {
       {this.props.page.failed && <h2>failed</h2>}
       {(!this.props.page.loading && !this.props.page.failed) && this.props.page.content &&
         <div>
-          <Input label="pageid" value={this.props.page.content.pageid} handleBlur={(value)=>{console.log(value);}}/>
-          <Input label="title" value={this.props.page.content.title}/>
-          <Input label="tags" value={this.props.page.content.tags.join(', ')}/>
-          <Textarea label="content" rows={12} value={this.props.page.content.content}/>
+          <button className={!this.state.edit && 'button-outline-primary' || 'button-primary'}
+            onClick={()=>{
+              this.setState({edit: !this.state.edit});
+            }}>{!this.state.edit && 'Edit' || 'Done'}</button>
+          {!this.state.edit && h(PageDisplay, this.props.page.content)}
+          {this.state.edit && h(PageEdit, this.props.page.content)}
         </div>
       }
     </div>;
