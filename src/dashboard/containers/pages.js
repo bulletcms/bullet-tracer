@@ -12,13 +12,13 @@ const h = React.createElement;
 class PageDisplay extends React.Component {
   render(){
     return <div>
-      <h4>pageid</h4>
+      <h6>pageid</h6>
       <span>{this.props.pageid}</span>
-      <h4>title</h4>
+      <h6>title</h6>
       <span>{this.props.title}</span>
-      <h4>tags</h4>
+      <h6>tags</h6>
       <span>{this.props.tags.join(', ')}</span>
-      <h4>content</h4>
+      <h6>content</h6>
       <pre>{this.props.content}</pre>
     </div>;
   }
@@ -63,12 +63,24 @@ class Pages extends React.Component {
       {this.props.page.failed && <h2>failed</h2>}
       {(!this.props.page.loading && !this.props.page.failed) && this.props.page.content &&
         <div>
-          <button className={!this.state.edit && 'button-outline-primary' || 'button-primary'}
-            onClick={()=>{
-              this.setState({edit: !this.state.edit});
-            }}>{!this.state.edit && 'Edit' || 'Done'}</button>
-          {!this.state.edit && h(PageDisplay, this.props.page.content)}
-          {this.state.edit && h(PageEdit, this.props.page.content)}
+          {!this.state.edit && <div>
+            <button className="button-outline-primary"
+              onClick={()=>{
+                this.setState({edit: true});
+              }}>Edit</button>
+            {h(PageDisplay, this.props.page.content)}
+          </div>}
+          {this.state.edit && <div>
+            <button className="button-outline"
+              onClick={()=>{
+                this.setState({edit: false});
+              }}>Cancel</button>
+            <button className="button-primary"
+              onClick={()=>{
+                this.setState({edit: false});
+              }}>Save</button>
+            {h(PageEdit, this.props.page.content)}
+          </div>}
         </div>
       }
     </div>;
