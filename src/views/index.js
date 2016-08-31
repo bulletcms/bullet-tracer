@@ -15,6 +15,7 @@ export {
   Header, Footer,
   Navbar,
   Sidebar, SidebarCounter, SidebarLayout,
+  Input,
   PageHeader,
   Article,
   Card,
