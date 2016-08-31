@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {CONFIG} from 'dashboard/config';
 import {fetchPageAction, fetchPagelistAction} from 'dashboard/reducers/actions';
 import {makeGetPage, makeGetPagelist} from 'dashboard/reducers/selectors';
-import {Input} from 'views';
+import {Input, Textarea} from 'views';
 
 
 class Pages extends React.Component {
@@ -30,10 +30,10 @@ class Pages extends React.Component {
       {this.props.page.failed && <h2>failed</h2>}
       {(!this.props.page.loading && !this.props.page.failed) && this.props.page.content &&
         <div>
-          <Input label="pageid"/>
-          <Input label="title"/>
-          <Input label="tags"/>
-          {JSON.stringify(this.props.page.content)}
+          <Input label="pageid" value={this.props.page.content.pageid} handleChange={(value)=>{console.log(value);}}/>
+          <Input label="title" value={this.props.page.content.title}/>
+          <Input label="tags" value={this.props.page.content.tags.join(', ')}/>
+          <Textarea label="content" value={this.props.page.content.content}/>
         </div>
       }
     </div>;

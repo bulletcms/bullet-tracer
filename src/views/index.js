@@ -1,7 +1,7 @@
 import {Article} from './article';
 import {Card} from './card';
 import {Footer} from './footer';
-import {Input} from './form';
+import {Input, Textarea} from './form';
 import {Grid, Column, Row} from './grid';
 import {Header} from './header';
 import {Navbar} from './navbar';
@@ -15,7 +15,7 @@ export {
   Header, Footer,
   Navbar,
   Sidebar, SidebarCounter, SidebarLayout,
-  Input,
+  Input, Textarea,
   PageHeader,
   Article,
   Card,
