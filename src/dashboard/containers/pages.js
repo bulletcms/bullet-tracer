@@ -30,10 +30,10 @@ class Pages extends React.Component {
       {this.props.page.failed && <h2>failed</h2>}
       {(!this.props.page.loading && !this.props.page.failed) && this.props.page.content &&
         <div>
-          <Input label="pageid" value={this.props.page.content.pageid} handleChange={(value)=>{console.log(value);}}/>
+          <Input label="pageid" value={this.props.page.content.pageid} handleBlur={(value)=>{console.log(value);}}/>
           <Input label="title" value={this.props.page.content.title}/>
           <Input label="tags" value={this.props.page.content.tags.join(', ')}/>
-          <Textarea label="content" value={this.props.page.content.content}/>
+          <Textarea label="content" rows={12} value={this.props.page.content.content}/>
         </div>
       }
     </div>;

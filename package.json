@@ -22,7 +22,7 @@
   "homepage": "https://github.com/bulletcms/bullet-tracer#readme",
   "dependencies": {
     "babel-polyfill": "^6.13.0",
-    "bullet-flash": "^0.2.3",
+    "bullet-flash": "^0.2.4",
     "bullet-mark": "^0.1.6",
     "immutable": "^3.8.1",
     "moment": "^2.14.1",
