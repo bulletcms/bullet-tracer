@@ -11,16 +11,26 @@ const h = React.createElement;
 
 
 class PageDisplay extends React.Component {
+  /**
+   * props:
+   *  edit: function
+   */
   render(){
     return <div>
+      <button className="button-outline-primary"
+        onClick={()=>{
+          if(this.props.edit){
+            this.props.edit();
+          }
+        }}>Edit</button>
       <h6>pageid</h6>
-      <span>{this.props.pageid}</span>
+      <span>{this.props.content.pageid}</span>
       <h6>title</h6>
-      <span>{this.props.title}</span>
+      <span>{this.props.content.title}</span>
       <h6>tags</h6>
-      <span>{this.props.tags.join(', ')}</span>
+      <span>{this.props.content.tags.join(', ')}</span>
       <h6>content</h6>
-      <pre>{this.props.content}</pre>
+      <pre>{this.props.content.content}</pre>
     </div>;
   }
 }
@@ -28,11 +38,29 @@ class PageDisplay extends React.Component {
 class PageEdit extends React.Component {
   constructor(props){
     super(props);
-    this.state = {data: Immutable.fromJS(this.props)};
+    this.state = {data: Immutable.fromJS(this.props.content)};
   }
+
+  /**
+   * props:
+   *  content: page object
+   *  save: function - callback with data
+   *  cancel: function
+   */
   render(){
-    console.log(this.state.data.toJSON());
     return <div>
+      <button className="button-outline"
+        onClick={()=>{
+          if(this.props.cancel){
+            this.props.cancel();
+          }
+        }}>Cancel</button>
+      <button className="button-primary"
+        onClick={()=>{
+          if(this.props.save){
+            this.props.save(this.state.data.toJSON());
+          }
+        }}>Save</button>
       <Input label="pageid" value={this.state.data.get('pageid')}
         handleBlur={(value)=>{
           this.setState({data: this.state.data.set('pageid', value)});}}/>
@@ -77,24 +105,13 @@ class Pages extends React.Component {
       {this.props.page.failed && <h2>failed</h2>}
       {(!this.props.page.loading && !this.props.page.failed) && this.props.page.content &&
         <div>
-          {!this.state.edit && <div>
-            <button className="button-outline-primary"
-              onClick={()=>{
-                this.setState({edit: true});
-              }}>Edit</button>
-            {h(PageDisplay, this.props.page.content)}
-          </div>}
-          {this.state.edit && <div>
-            <button className="button-outline"
-              onClick={()=>{
-                this.setState({edit: false});
-              }}>Cancel</button>
-            <button className="button-primary"
-              onClick={()=>{
-                this.setState({edit: false});
-              }}>Save</button>
-            {h(PageEdit, this.props.page.content)}
-          </div>}
+          {!this.state.edit &&
+            <PageDisplay content={this.props.page.content}
+              edit={()=>{this.setState({edit: true});}}/>}
+          {this.state.edit &&
+            <PageEdit content={this.props.page.content}
+              save={(data)=>{this.setState({edit: false}); console.log(data);}}
+              cancel={()=>{this.setState({edit: false});}}/>}
         </div>
       }
     </div>;
