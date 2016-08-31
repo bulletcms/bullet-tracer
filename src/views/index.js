@@ -1,6 +1,7 @@
 import {Article} from './article';
 import {Card} from './card';
 import {Footer} from './footer';
+import {Input} from './form';
 import {Grid, Column, Row} from './grid';
 import {Header} from './header';
 import {Navbar} from './navbar';

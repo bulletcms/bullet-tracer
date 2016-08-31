@@ -22,7 +22,7 @@
   "homepage": "https://github.com/bulletcms/bullet-tracer#readme",
   "dependencies": {
     "babel-polyfill": "^6.13.0",
-    "bullet-flash": "^0.2.1",
+    "bullet-flash": "^0.2.2",
     "bullet-mark": "^0.1.6",
     "immutable": "^3.8.1",
     "moment": "^2.14.1",
@@ -33,7 +33,7 @@
     "react-redux": "^4.4.5",
     "react-router": "^2.7.0",
     "redux": "^3.5.2",
-    "redux-saga": "^0.11.0",
+    "redux-saga": "^0.11.1",
     "reselect": "^2.5.3",
     "whatwg-fetch": "^1.0.0"
   },
@@ -47,8 +47,8 @@
     "babel-preset-stage-2": "^6.13.0",
     "concurrently": "^2.2.0",
     "css-loader": "^0.24.0",
-    "eslint": "^3.3.1",
-    "eslint-plugin-react": "^6.1.2",
+    "eslint": "^3.4.0",
+    "eslint-plugin-react": "^6.2.0",
     "express": "^4.14.0",
     "extract-text-webpack-plugin": "^1.0.1",
     "json-loader": "^0.5.4",
