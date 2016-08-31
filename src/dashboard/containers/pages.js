@@ -1,5 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import Immutable from 'immutable';
 
 import {CONFIG} from 'dashboard/config';
 import {fetchPageAction, fetchPagelistAction} from 'dashboard/reducers/actions';
@@ -25,12 +26,25 @@ class PageDisplay extends React.Component {
 }
 
 class PageEdit extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {data: Immutable.fromJS(this.props)};
+  }
   render(){
+    console.log(this.state.data.toJSON());
     return <div>
-      <Input label="pageid" value={this.props.pageid} handleBlur={(value)=>{console.log(value);}}/>
-      <Input label="title" value={this.props.title}/>
-      <Input label="tags" value={this.props.tags.join(', ')}/>
-      <Textarea label="content" rows={12} value={this.props.content}/>
+      <Input label="pageid" value={this.state.data.get('pageid')}
+        handleBlur={(value)=>{
+          this.setState({data: this.state.data.set('pageid', value)});}}/>
+      <Input label="title" value={this.state.data.get('title')}
+        handleBlur={(value)=>{
+          this.setState({data: this.state.data.set('title', value)});}}/>
+      <Input label="tags" value={this.state.data.get('tags').join(', ')}
+        handleBlur={(value)=>{
+          this.setState({data: this.state.data.set('tags', value.split(/\s*,\s*/))});}}/>
+      <Textarea label="content" rows={12} value={this.state.data.get('content')}
+        handleBlur={(value)=>{
+          this.setState({data: this.state.data.set('content', value)});}}/>
     </div>;
   }
 }
