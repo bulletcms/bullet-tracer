@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {interpreter} from 'bullet-mark';
+import {parser, interpreter} from 'bullet-mark';
 
 import {CONFIG} from 'config';
 import {fetchPageAction} from 'reducers/actions';
@@ -23,15 +23,11 @@ class Pages extends React.Component{
   }
 
   render(){
-    if(this.props.loading){
-      return <Section><h1>loading</h1></Section>;
-    } else if(this.props.failed){
-      return <Section><h1>404 <br/> <small>does not exist</small></h1></Section>;
-    } else {
-      return <div>
-          {interpreter(this.props.content, views)}
-      </div>;
-    }
+    return <div>
+      {this.props.loading && <Section><h1>loading</h1></Section>}
+      {this.props.failed && <Section><h1>404 <br/> <small>does not exist</small></h1></Section>}
+      {(!this.props.loading && !this.props.failed) && this.props.content && <div>{interpreter(parser(this.props.content), views)}</div>}
+    </div>;
   }
 }
 
