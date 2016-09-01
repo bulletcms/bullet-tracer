@@ -29,7 +29,7 @@ const LoginSaga = function*(){
     const googleUser = yield call([auth2, auth2.signIn])
     const signedIn = googleUser.isSignedIn();
     if(signedIn){
-      const {id_token} = googleUser.getAuthResponse();
+      const {id_token, expires_at} = googleUser.getAuthResponse();
       const profileObj = googleUser.getBasicProfile();
       const profile = {
         name: profileObj.getGivenName(),

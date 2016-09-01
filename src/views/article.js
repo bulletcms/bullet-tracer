@@ -10,9 +10,9 @@ class Article extends React.Component{
    *   date: unixtime
    */
   render(){
-    const time = Moment(this.props.date);
+    const date = new Date(this.props.date);
     return <article>
-      <h2>{this.props.title} <br/> <small>By {this.props.author} | <span title={time.format()}>{time.fromNow()}</span></small></h2>
+      <h2>{this.props.title} <br/> <small>By {this.props.author} | <span title={date.toString()}>{Moment(this.props.date).fromNow()}</span></small></h2>
       {this.props.children}
     </article>;
   }
