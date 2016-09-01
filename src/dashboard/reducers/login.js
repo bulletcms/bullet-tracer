@@ -95,7 +95,7 @@ const getLoggedIn = (state)=>{
 };
 
 const getLoginExpiresAt = (state)=>{
-  return state.Login.get('loginExpiresAt');
+  return state.Login.get('expiresAt');
 };
 
 const getIdToken = (state)=>{

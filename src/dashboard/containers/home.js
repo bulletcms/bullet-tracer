@@ -30,11 +30,10 @@ class Home extends React.Component{
           }}>Login</button>
       </div>}
       {this.props.logininfo && <div>
+        <h6>Signed in as: {this.props.logininfo.username}</h6>
         <button className="button-outline-primary" onClick={()=>{
             this.props.logout();
-          }}>Sign in</button>
-        <span>{this.props.logininfo.username}</span>
-        <span>{this.props.logininfo.idToken}</span>
+          }}>Logout</button>
       </div>}
     </div>;
   }
