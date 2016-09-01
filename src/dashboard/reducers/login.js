@@ -30,15 +30,6 @@ const LoginSaga = function*(){
     const signedIn = googleUser.isSignedIn();
     if(signedIn){
       const {id_token, expires_at} = googleUser.getAuthResponse();
-      const profileObj = googleUser.getBasicProfile();
-      const profile = {
-        name: profileObj.getGivenName(),
-        fullName: profileObj.getName(),
-        lastName: profileObj.getFamilyName(),
-        email: profileObj.getEmail(),
-        googleId: profileObj.getId(),
-        profilePicture: profileObj.getImageUrl(),
-      };
 
       const logoutaction = yield take(ACTIONS.logout);
       yield call([auth2, auth2.signOut]);
