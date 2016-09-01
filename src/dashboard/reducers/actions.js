@@ -1,4 +1,4 @@
 import {fetchPageAction, fetchPagelistAction} from './pages';
-import {loginAction} from './login';
+import {loginAction, logoutAction} from './login';
 
-export {fetchPageAction, fetchPagelistAction, loginAction};
+export {fetchPageAction, fetchPagelistAction, loginAction, logoutAction};
