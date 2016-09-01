@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 
 import {CONFIG} from 'dashboard/config';
-
+import {loginAction} from 'dashboard/reducers/actions';
 
 class Home extends React.Component {
   componentWillMount(){
@@ -12,29 +12,30 @@ class Home extends React.Component {
   render(){
     return <div>
       <h1>Home</h1>
-      Hello World!
+      <button className="button-primary" onClick={()=>{
+          this.props.login();
+        }}>Sign in</button>
     </div>;
   }
 }
 
-// const makeMapStateToProps = ()=>{
-//   const getNav = makeGetNav();
-//   return (state)=>{
-//     return getNav(state);
-//   };
-// };
-//
-// const mapDispatchToProps = (dispatch, props)=>{
-//   return {
-//     fetchConfig: ()=>{
-//       dispatch(fetchConfigAction(CONFIG.retrieve('baseConfigUrl')));
-//     }
-//   };
-// };
-//
-// App = connect(
-//   makeMapStateToProps,
-//   mapDispatchToProps
-// )(App);
+const makeMapStateToProps = ()=>{
+  return (state)=>{
+    return {};
+  };
+};
+
+const mapDispatchToProps = (dispatch, props)=>{
+  return {
+    login: ()=>{
+      dispatch(loginAction(CONFIG.retrieve('loginClientId')));
+    }
+  };
+};
+
+Home = connect(
+  makeMapStateToProps,
+  mapDispatchToProps
+)(Home);
 
 export {Home};
