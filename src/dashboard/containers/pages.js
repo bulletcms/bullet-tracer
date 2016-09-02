@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import Immutable from 'immutable';
+import {parser} from 'bullet-mark';
 
 import {CONFIG} from 'dashboard/config';
 import {fetchPageAction, fetchPagelistAction} from 'dashboard/reducers/actions';
@@ -110,7 +111,15 @@ class Pages extends React.Component {
               edit={()=>{this.setState({edit: true});}}/>}
           {this.state.edit &&
             <PageEdit content={this.props.page.content}
-              save={(data)=>{this.setState({edit: false}); console.log(data);}}
+              save={(data)=>{
+                try {
+                  parser(data);
+                  this.setState({edit: false});
+                  console.log(data);
+                } catch(err){
+                  
+                }
+              }}
               cancel={()=>{this.setState({edit: false});}}/>}
         </div>
       }
