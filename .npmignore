@@ -3,5 +3,7 @@
 !.npmignore
 !README.md
 !lib/index.js
-!lib/style.css
+!lib/indexstyle.css
+!lib/dashboard.js
+!lib/dashboardstyle.css
 !index.js
