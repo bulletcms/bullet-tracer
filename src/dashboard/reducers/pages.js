@@ -65,7 +65,11 @@ const fetchPageSagaHelper = function*(action){
   try {
     let res;
     if(options){
-      res = yield call(fetch, action.baseurl + '/' + action.pageid, options);
+      if(options.method == 'POST'){
+        res = yield call(fetch, action.baseurl, options);
+      } else {
+        res = yield call(fetch, action.baseurl + '/' + action.pageid, options);
+      }
     } else {
       res = yield call(fetch, action.baseurl + '/' + action.pageid);
     }
