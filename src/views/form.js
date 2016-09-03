@@ -11,14 +11,13 @@ class Input extends React.Component{
    *   label       : string
    *   type        : string - input type
    *   value       : string - initial value
-   *   valid       : boolean
    *   error       : string
    *   handleChange: function callback - passed input value
    *   handleBlur  : function callback - passed input value
    */
   render(){
     const className = ['input'];
-    if(this.props.invalid){
+    if(this.props.error){
       className.push('invalid');
     }
     return <div className={className.join(' ')}>

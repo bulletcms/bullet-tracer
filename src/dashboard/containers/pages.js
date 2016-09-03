@@ -45,10 +45,17 @@ class PageEdit extends React.Component {
   /**
    * props:
    *  content: page object
+   *  error: page error object
    *  save: function - callback with data
+   *  check: function - callback with data
    *  cancel: function
    */
   render(){
+    const errStyle = {
+      color: '#d50000',
+      backgroundColor: 'rgba(213, 0, 0, 0.12)',
+      padding: '0 8px'
+    };
     return <div>
       <button className="button-outline"
         onClick={()=>{
@@ -56,24 +63,32 @@ class PageEdit extends React.Component {
             this.props.cancel();
           }
         }}>Cancel</button>
+      <button className="button-outline"
+        onClick={()=>{
+          if(this.props.check){
+            this.props.check(this.state.data.toJSON());
+          }
+        }}>Check</button>
       <button className="button-primary"
         onClick={()=>{
           if(this.props.save){
             this.props.save(this.state.data.toJSON());
           }
         }}>Save</button>
-      <Input label="pageid" value={this.state.data.get('pageid')}
-        handleBlur={(value)=>{
-          this.setState({data: this.state.data.set('pageid', value)});}}/>
-      <Input label="title" value={this.state.data.get('title')}
-        handleBlur={(value)=>{
-          this.setState({data: this.state.data.set('title', value)});}}/>
-      <Input label="tags" value={this.state.data.get('tags').join(', ')}
-        handleBlur={(value)=>{
-          this.setState({data: this.state.data.set('tags', value.split(/\s*,\s*/))});}}/>
+      <Input label="pageid" value={this.state.data.get('pageid')} error={this.props.error.pageid}
+        handleBlur={(value)=>{this.setState({data: this.state.data.set('pageid', value)});}}/>
+      <Input label="title" value={this.state.data.get('title')} error={this.props.error.title}
+        handleBlur={(value)=>{this.setState({data: this.state.data.set('title', value)});}}/>
+      <Input label="tags" value={this.state.data.get('tags').join(', ')} error={this.props.error.tags}
+        handleBlur={(value)=>{this.setState({data: this.state.data.set('tags', value.split(/\s*,\s*/))});}}/>
       <Textarea label="content" rows={12} value={this.state.data.get('content')}
-        handleBlur={(value)=>{
-          this.setState({data: this.state.data.set('content', value)});}}/>
+        handleBlur={(value)=>{this.setState({data: this.state.data.set('content', value)});}}/>
+      {this.props.error.content &&
+        <div style={errStyle}>
+          <h6 style={{color: '#d50000'}}>{this.props.error.content.type}</h6>
+          <span>{this.props.error.content.message}</span>
+        </div>
+      }
     </div>;
   }
 }
@@ -99,14 +114,39 @@ class Pages extends React.Component {
 
   locateErr(pageObject){
     const {pageid, title, tags, content} = pageObject;
-    return false;
+    const error = {
+      'pageid': false,
+      'title': false,
+      'tags': false,
+      'content': false
+    };
+    let failed = false;
+    if(!/^[a-z0-9]+$/.test(pageid)){
+      error.pageid = 'must only contain a-z 0-9';
+      failed = true;
+    }
+    if(!/^.+$/.test(title)){
+      error.title = 'must not contain any newline characters';
+      failed = true;
+    }
+    if(!Array.isArray(tags) || !(tags.every((i)=>{return /^[a-z0-9]+$/.test(i);}))){
+      error.tags = 'each tag must only contain a-z 0-9';
+      failed = true;
+    }
+    try {
+      parser(content);
+    } catch(err){
+      error.content = err;
+      failed = true;
+    }
+    if(failed){
+      return error;
+    } else {
+      return false;
+    }
   }
 
   render(){
-    const errStyle = {
-      color: '#d50000',
-      backgroundColor: 'rgba(213, 0, 0, 0.12)'
-    };
     return <div>
       <h1>Pages</h1>
       {this.props.pagelist.loading && <h2>loading</h2>}
@@ -128,24 +168,26 @@ class Pages extends React.Component {
             <PageDisplay content={this.props.page.content}
               edit={()=>{this.setState({...this.state, edit: true});}}/>}
           {this.state.edit &&
-            <PageEdit content={this.props.page.content}
+            <PageEdit content={this.props.page.content} error={this.state.error}
               save={(data)=>{
                 const errs = this.locateErr(data);
                 if(errs){
                   this.setState({...this.state, error: errs});
                 } else {
-                  this.setState({...this.state, edit: false});
+                  this.setState({error: noerr, edit: false});
                   console.log(data);
+                }
+              }}
+              check={(data)=>{
+                const errs = this.locateErr(data);
+                if(errs){
+                  this.setState({...this.state, error: errs});
+                } else {
+                  this.setState({...this.state, error: noerr});
                 }
               }}
               cancel={()=>{this.setState({...this.state, error: noerr, edit: false});}}
             />
-          }
-          {this.state.error &&
-            <div style={errStyle}>
-              <h6>{this.state.error.type}</h6>
-              <span>{this.state.error.message}</span>
-            </div>
           }
         </div>
       }
