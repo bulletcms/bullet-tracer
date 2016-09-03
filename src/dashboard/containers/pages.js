@@ -176,9 +176,8 @@ class Pages extends React.Component {
                 } else {
                   this.setState({error: noerr, edit: false});
                   if(this.props.logininfo && this.props.loginValid(this.props.loginExpiresAt)){
-                    data.username = this.props.logininfo.username;
-                    data.idToken = this.props.logininfo.idToken;
-                    this.props.fetchPage(data.pageid, 'PUT', data);
+                    const {username, idToken} = this.props.logininfo;
+                    this.props.fetchPage(data.pageid, 'PUT', {username, idToken, data});
                   }
                 }
               }}
