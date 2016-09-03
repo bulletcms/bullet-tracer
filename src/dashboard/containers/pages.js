@@ -49,6 +49,7 @@ class PageEdit extends React.Component {
    *  content: page object
    *  error: page error object
    *  save: function - callback with data
+   *  delete: function - callback with data
    *  check: function - callback with data
    *  cancel: function
    */
@@ -73,12 +74,12 @@ class PageEdit extends React.Component {
               this.props.save(this.state.data.toJSON());
             }
           }}>Save</button>
-        <button className="button-danger"
+        {this.props.delete && <button className="button-danger"
           onClick={()=>{
             if(this.props.delete){
               this.props.delete(this.state.data.toJSON());
             }
-          }}>Delete</button>
+          }}>Delete</button>}
       </div>
       <Input label="pageid" value={this.state.data.get('pageid')} error={this.props.error.pageid}
         handleBlur={(value)=>{this.setState({data: this.state.data.set('pageid', value)});}}/>
@@ -207,6 +208,14 @@ class Pages extends React.Component {
                 }
               }}
               cancel={()=>{this.setState({...this.state, error: noerr, edit: false});}}
+              delete={(data)=>{
+                if(this.props.logininfo && this.props.loginValid(this.props.loginExpiresAt)){
+                  if(window.confirm(`Confirm delete page ${data.pageid}`)){ 
+                    const {username, idToken} = this.props.logininfo;
+                    this.props.fetchPage(data.pageid, 'DELETE', {username, idToken, data: {pageid: data.pageid}});
+                  }
+                }
+              }}
             />
           }
           {this.state.edit && this.state.newpage &&

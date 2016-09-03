@@ -1,5 +1,8 @@
 @import '../../node_modules/bullet-flash/src/main';
 
+$color-danger: #d50000;
+$color-success: #66BB6A;
+
 .tablist {
   list-style: none;
   padding: 0;
@@ -26,21 +29,27 @@
 }
 
 .button-danger {
-  
+  background-color: $color-danger;
+  border: 2px solid $color-danger;
+
+  &:hover {
+    border: 2px solid $color-danger;
+    color: $color-danger;
+  }
 }
 
 .textarea-error {
-  color: #d50000;
-  background-color: rgba(213, 0, 0, 0.12);
-  border-color: #d50000;
+  color: $color-danger;
+  background-color: rgba($color-danger, 0.12);
+  border-color: $color-danger;
 
   h6 {
-    color: #d50000;
+    color: $color-danger;
   }
 }
 
 .request-status {
-  color: #66BB6A;
-  background-color: rgba(102,187,106, 0.12);
-  border-color: #66BB6A;
+  color: $color-success;
+  background-color: rgba($color-success, 0.12);
+  border-color: $color-success;
 }
