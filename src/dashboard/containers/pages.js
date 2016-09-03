@@ -88,7 +88,16 @@ class Pages extends React.Component {
     this.props.fetchPagelist();
   }
 
+  validate(pageObject){
+    const {pageid, title, tags, content} = pageObject;
+    return true;
+  }
+
   render(){
+    const errStyle = {
+      color: '#d50000',
+      backgroundColor: 'rgba(213, 0, 0, 0.12)'
+    };
     return <div>
       <h1>Pages</h1>
       {this.props.pagelist.loading && <h2>loading</h2>}
@@ -112,15 +121,21 @@ class Pages extends React.Component {
           {this.state.edit &&
             <PageEdit content={this.props.page.content}
               save={(data)=>{
-                try {
+                if(this.validate(data)){
                   parser(data);
                   this.setState({edit: false});
                   console.log(data);
-                } catch(err){
-                  
+                } else {  
+                  this.setState({...this.state, error: err});
                 }
               }}
               cancel={()=>{this.setState({edit: false});}}/>}
+          {this.state.error &&
+            <div style={errStyle}>
+              <h6>{this.state.error.type}</h6>
+              <span>{this.state.error.message}</span>
+            </div>
+          }
         </div>
       }
     </div>;
