@@ -8,6 +8,7 @@ import {Navbar} from './navbar';
 import {PageHeader} from './pageheader';
 import {Section} from './section';
 import {Sidebar, SidebarCounter, SidebarLayout} from './sidebar';
+import Modal from 'react-modal';
 
 export {
   Grid, Column, Row,
@@ -19,4 +20,5 @@ export {
   PageHeader,
   Article,
   Card,
+  Modal
 };

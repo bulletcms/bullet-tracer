@@ -6,7 +6,7 @@ import {parser} from 'bullet-mark';
 import {CONFIG} from 'dashboard/config';
 import {fetchPageAction, newPageAction, fetchPagelistAction} from 'dashboard/reducers/actions';
 import {makeGetPage, getRequest, makeGetPagelist, getLogin, getLoginExpiresAt, getLoginValid} from 'dashboard/reducers/selectors';
-import {Input, Textarea} from 'views';
+import {Input, Textarea, Modal} from 'views';
 
 const h = React.createElement;
 
@@ -112,7 +112,9 @@ class Pages extends React.Component {
         'tags': false,
         'content': false
       },
-      newpage: false
+      newpage: false,
+      confirmDelete: false,
+      deleteId: false
     };
   }
 
@@ -209,12 +211,7 @@ class Pages extends React.Component {
               }}
               cancel={()=>{this.setState({...this.state, error: noerr, edit: false});}}
               delete={(data)=>{
-                if(this.props.logininfo && this.props.loginValid(this.props.loginExpiresAt)){
-                  if(window.confirm(`Confirm delete page ${data.pageid}`)){ 
-                    const {username, idToken} = this.props.logininfo;
-                    this.props.fetchPage(data.pageid, 'DELETE', {username, idToken, data: {pageid: data.pageid}});
-                  }
-                }
+                this.setState({...this.state, deleteId: data.pageid, confirmDelete: true});
               }}
             />
           }
@@ -251,6 +248,20 @@ class Pages extends React.Component {
           {!this.props.request.status && <span>request failed for page: {this.props.request.pageid}</span>}
         </pre>
       }
+      <Modal isOpen={this.state.confirmDelete}>
+        <h1>Confirm Delete</h1>
+        <h4>pageid: {this.state.deleteId}</h4>
+        <div className="button-row">
+          <button onClick={()=>{this.setState({...this.state, deleteId: false, confirmDelete: false});}}>Cancel</button>
+          <button className="button-danger" onClick={()=>{
+            if(this.props.logininfo && this.props.loginValid(this.props.loginExpiresAt)){
+              const {username, idToken} = this.props.logininfo;
+              this.props.fetchPage(this.state.deleteId, 'DELETE', {username, idToken, data: {pageid: this.state.deleteId}});
+            }
+            this.setState({...this.state, deleteId: false, confirmDelete: false});
+          }}>Delete</button>
+        </div>
+      </Modal>
     </div>;
   }
 }
