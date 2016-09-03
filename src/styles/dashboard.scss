@@ -17,6 +17,18 @@
   }
 }
 
+.button-row {
+  padding: 4px 0;
+
+  button {
+    margin: 0 4px;
+  }
+}
+
+.button-danger {
+  
+}
+
 .textarea-error {
   color: #d50000;
   background-color: rgba(213, 0, 0, 0.12);

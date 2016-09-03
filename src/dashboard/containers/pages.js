@@ -4,7 +4,7 @@ import Immutable from 'immutable';
 import {parser} from 'bullet-mark';
 
 import {CONFIG} from 'dashboard/config';
-import {fetchPageAction, fetchPagelistAction} from 'dashboard/reducers/actions';
+import {fetchPageAction, newPageAction, fetchPagelistAction} from 'dashboard/reducers/actions';
 import {makeGetPage, getRequest, makeGetPagelist, getLogin, getLoginExpiresAt, getLoginValid} from 'dashboard/reducers/selectors';
 import {Input, Textarea} from 'views';
 
@@ -18,12 +18,14 @@ class PageDisplay extends React.Component {
    */
   render(){
     return <div>
-      <button className="button-outline-primary"
-        onClick={()=>{
-          if(this.props.edit){
-            this.props.edit();
-          }
-        }}>Edit</button>
+      <div className="button-row">
+        <button className="button-outline-primary"
+          onClick={()=>{
+            if(this.props.edit){
+              this.props.edit();
+            }
+          }}>Edit</button>
+      </div>
       <h6>pageid</h6>
       <span>{this.props.content.pageid}</span>
       <h6>title</h6>
@@ -52,24 +54,32 @@ class PageEdit extends React.Component {
    */
   render(){
     return <div>
-      <button className="button-outline"
-        onClick={()=>{
-          if(this.props.cancel){
-            this.props.cancel();
-          }
-        }}>Cancel</button>
-      <button className="button-outline"
-        onClick={()=>{
-          if(this.props.check){
-            this.props.check(this.state.data.toJSON());
-          }
-        }}>Check</button>
-      <button className="button-primary"
-        onClick={()=>{
-          if(this.props.save){
-            this.props.save(this.state.data.toJSON());
-          }
-        }}>Save</button>
+      <div className="button-row">
+        <button className="button-outline"
+          onClick={()=>{
+            if(this.props.cancel){
+              this.props.cancel();
+            }
+          }}>Cancel</button>
+        <button className="button-outline"
+          onClick={()=>{
+            if(this.props.check){
+              this.props.check(this.state.data.toJSON());
+            }
+          }}>Check</button>
+        <button className="button-primary"
+          onClick={()=>{
+            if(this.props.save){
+              this.props.save(this.state.data.toJSON());
+            }
+          }}>Save</button>
+        <button className="button-danger"
+          onClick={()=>{
+            if(this.props.delete){
+              this.props.delete(this.state.data.toJSON());
+            }
+          }}>Delete</button>
+      </div>
       <Input label="pageid" value={this.state.data.get('pageid')} error={this.props.error.pageid}
         handleBlur={(value)=>{this.setState({data: this.state.data.set('pageid', value)});}}/>
       <Input label="title" value={this.state.data.get('title')} error={this.props.error.title}
@@ -93,13 +103,15 @@ const noerr = {'pageid': false, 'title': false, 'tags': false, 'content': false}
 class Pages extends React.Component {
   constructor(props){
     super(props);
-    this.state = {edit: false,
+    this.state = {
+      edit: false,
       error: {
         'pageid': false,
         'title': false,
         'tags': false,
         'content': false
-      }
+      },
+      newpage: false
     };
   }
 
@@ -148,9 +160,19 @@ class Pages extends React.Component {
       {this.props.pagelist.failed && <h2>failed</h2>}
       {(!this.props.pagelist.loading && !this.props.pagelist.failed) && this.props.pagelist.content &&
         <div>
+          <div className="button-row">
+            <button className="button-outline"
+              onClick={()=>{this.props.fetchPagelist();}}>
+              Refresh
+            </button>
+            <button className="button-outline-primary"
+              onClick={()=>{this.props.newPage(); this.setState({...this.state, error: noerr, newpage: true, edit: true})}}>
+              New Page
+            </button>
+          </div>
           <ul className="tablist">
             {this.props.pagelist.content.map((i)=>{
-              return <li onClick={()=>{this.setState({...this.state, error: noerr, edit: false}); this.props.fetchPage(i);}} key={i}>{i}</li>;
+              return <li onClick={()=>{this.setState({...this.state, error: noerr, newpage: false, edit: false}); this.props.fetchPage(i);}} key={i}>{i}</li>;
             })}
           </ul>
         </div>
@@ -162,17 +184,42 @@ class Pages extends React.Component {
           {!this.state.edit &&
             <PageDisplay content={this.props.page.content}
               edit={()=>{this.setState({...this.state, edit: true});}}/>}
-          {this.state.edit &&
+          {this.state.edit && !this.state.newpage &&
             <PageEdit content={this.props.page.content} error={this.state.error}
               save={(data)=>{
                 const errs = this.locateErr(data);
                 if(errs){
                   this.setState({...this.state, error: errs});
                 } else {
-                  this.setState({error: noerr, edit: false});
+                  this.setState({...this.state, error: noerr, edit: false});
                   if(this.props.logininfo && this.props.loginValid(this.props.loginExpiresAt)){
                     const {username, idToken} = this.props.logininfo;
                     this.props.fetchPage(data.pageid, 'PUT', {username, idToken, data});
+                  }
+                }
+              }}
+              check={(data)=>{
+                const errs = this.locateErr(data);
+                if(errs){
+                  this.setState({...this.state, error: errs});
+                } else {
+                  this.setState({...this.state, error: noerr});
+                }
+              }}
+              cancel={()=>{this.setState({...this.state, error: noerr, edit: false});}}
+            />
+          }
+          {this.state.edit && this.state.newpage &&
+            <PageEdit content={this.props.page.content} error={this.state.error}
+              save={(data)=>{
+                const errs = this.locateErr(data);
+                if(errs){
+                  this.setState({...this.state, error: errs});
+                } else {
+                  this.setState({...this.state, error: noerr, edit: false});
+                  if(this.props.logininfo && this.props.loginValid(this.props.loginExpiresAt)){
+                    const {username, idToken} = this.props.logininfo;
+                    this.props.fetchPage(data.pageid, 'POST', {username, idToken, data});
                   }
                 }
               }}
@@ -217,6 +264,9 @@ const mapDispatchToProps = (dispatch)=>{
   return {
     fetchPage: (pageid, method=false, body=false)=>{
       dispatch(fetchPageAction(CONFIG.retrieve('basePagesUrl'), pageid, method, body));
+    },
+    newPage: ()=>{
+      dispatch(newPageAction());
     },
     fetchPagelist: ()=>{
       dispatch(fetchPagelistAction(CONFIG.retrieve('basePagesUrl')));

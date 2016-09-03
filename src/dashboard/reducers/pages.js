@@ -13,6 +13,7 @@ const ACTIONS = {
   pageLoading: Symbol('pageLoading'),
   fetchSuccess: Symbol('fetchSuccess'),
   fetchFail: Symbol('fetchFail'),
+  newPage: Symbol('newPage'),
   requestLoading: Symbol('requestLoading'),
   requestSuccess: Symbol('requestSuccess'),
   requestFail: Symbol('requestFail'),
@@ -29,6 +30,12 @@ const fetchPageAction = (baseurl, pageid, method=false, body=false)=>{
     baseurl: baseurl,
     method: method,
     body: body
+  };
+};
+
+const newPageAction = ()=>{
+  return {
+    type: ACTIONS.newPage
   };
 };
 
@@ -150,6 +157,8 @@ const Pages = (state=defaultState, action)=>{
       return state.set('pageLoading', false).set('pageFailed', false).set('lastUpdate', Date.now()).set('page', action.payload);
     case ACTIONS.fetchFail:
       return state.set('pageLoading', false).set('pageFailed', true);
+    case ACTIONS.newPage:
+      return state.set('pageLoading', false).set('pageFailed', false).set('page', {pageid: '', title: '', tags: [], content: ''});
     case ACTIONS.requestLoading:
       return state.set('requestLoading', true).set('requestFailed', false);
     case ACTIONS.requestSuccess:
@@ -253,4 +262,4 @@ const makeGetPagelist = ()=>{
 };
 
 
-export {Pages, FetchPageSaga, FetchPagelistSaga, fetchPageAction, fetchPagelistAction, makeGetPage, getRequest, makeGetPagelist};
+export {Pages, FetchPageSaga, FetchPagelistSaga, fetchPageAction, newPageAction, fetchPagelistAction, makeGetPage, getRequest, makeGetPagelist};
