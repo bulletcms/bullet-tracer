@@ -210,6 +210,10 @@ const makeGetPage = ()=>{
   );
 };
 
+const getRequest = (state)=>{
+  return state.Pages.get('request');
+};
+
 const getPagelistLoading = (state)=>{
   return state.Pages.get('pagelistLoading');
 };
@@ -249,4 +253,4 @@ const makeGetPagelist = ()=>{
 };
 
 
-export {Pages, FetchPageSaga, FetchPagelistSaga, fetchPageAction, fetchPagelistAction, makeGetPage, makeGetPagelist};
+export {Pages, FetchPageSaga, FetchPagelistSaga, fetchPageAction, fetchPagelistAction, makeGetPage, getRequest, makeGetPagelist};

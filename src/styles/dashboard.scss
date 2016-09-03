@@ -16,3 +16,19 @@
     }
   }
 }
+
+.textarea-error {
+  color: #d50000;
+  background-color: rgba(213, 0, 0, 0.12);
+  border-color: #d50000;
+
+  h6 {
+    color: #d50000;
+  }
+}
+
+.request-status {
+  color: #66BB6A;
+  background-color: rgba(102,187,106, 0.12);
+  border-color: #66BB6A;
+}

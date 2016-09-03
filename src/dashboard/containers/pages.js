@@ -5,7 +5,7 @@ import {parser} from 'bullet-mark';
 
 import {CONFIG} from 'dashboard/config';
 import {fetchPageAction, fetchPagelistAction} from 'dashboard/reducers/actions';
-import {makeGetPage, makeGetPagelist, getLogin, getLoginExpiresAt, getLoginValid} from 'dashboard/reducers/selectors';
+import {makeGetPage, getRequest, makeGetPagelist, getLogin, getLoginExpiresAt, getLoginValid} from 'dashboard/reducers/selectors';
 import {Input, Textarea} from 'views';
 
 const h = React.createElement;
@@ -51,11 +51,6 @@ class PageEdit extends React.Component {
    *  cancel: function
    */
   render(){
-    const errStyle = {
-      color: '#d50000',
-      backgroundColor: 'rgba(213, 0, 0, 0.12)',
-      padding: '0 8px'
-    };
     return <div>
       <button className="button-outline"
         onClick={()=>{
@@ -84,10 +79,10 @@ class PageEdit extends React.Component {
       <Textarea label="content" rows={12} value={this.state.data.get('content')}
         handleBlur={(value)=>{this.setState({data: this.state.data.set('content', value)});}}/>
       {this.props.error.content &&
-        <div style={errStyle}>
-          <h6 style={{color: '#d50000'}}>{this.props.error.content.type}</h6>
+        <pre className="textarea-error">
+          <h6>{this.props.error.content.type}</h6>
           <span>{this.props.error.content.message}</span>
-        </div>
+        </pre>
       }
     </div>;
   }
@@ -194,6 +189,12 @@ class Pages extends React.Component {
           }
         </div>
       }
+      {this.props.request &&
+        <pre className="request-status">
+          {this.props.request.status && <span>request success for page: {this.props.request.pageid}</span>}
+          {!this.props.request.status && <span>request failed for page: {this.props.request.pageid}</span>}
+        </pre>
+      }
     </div>;
   }
 }
@@ -206,7 +207,8 @@ const makeMapStateToProps = ()=>{
       page: getPage(state),
       pagelist: getPagelist(state),
       logininfo: getLogin(state),
-      loginExpiresAt: getLoginExpiresAt(state)
+      loginExpiresAt: getLoginExpiresAt(state),
+      request: getRequest(state)
     };
   };
 };
