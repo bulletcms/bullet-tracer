@@ -5,7 +5,7 @@ import {parser} from 'bullet-mark';
 
 import {CONFIG} from 'dashboard/config';
 import {fetchPageAction, fetchPagelistAction} from 'dashboard/reducers/actions';
-import {makeGetPage, makeGetPagelist} from 'dashboard/reducers/selectors';
+import {makeGetPage, makeGetPagelist, getLogin, getLoginExpiresAt, getLoginValid} from 'dashboard/reducers/selectors';
 import {Input, Textarea} from 'views';
 
 const h = React.createElement;
@@ -175,7 +175,11 @@ class Pages extends React.Component {
                   this.setState({...this.state, error: errs});
                 } else {
                   this.setState({error: noerr, edit: false});
-                  console.log(data);
+                  if(this.props.logininfo && this.props.loginValid(this.props.loginExpiresAt)){
+                    data.username = this.props.logininfo.username;
+                    data.idToken = this.props.logininfo.idToken;
+                    this.props.fetchPage(data.pageid, 'PUT', data);
+                  }
                 }
               }}
               check={(data)=>{
@@ -201,7 +205,9 @@ const makeMapStateToProps = ()=>{
   return (state)=>{
     return {
       page: getPage(state),
-      pagelist: getPagelist(state)
+      pagelist: getPagelist(state),
+      logininfo: getLogin(state),
+      loginExpiresAt: getLoginExpiresAt(state)
     };
   };
 };
@@ -213,6 +219,9 @@ const mapDispatchToProps = (dispatch)=>{
     },
     fetchPagelist: ()=>{
       dispatch(fetchPagelistAction(CONFIG.retrieve('basePagesUrl')));
+    },
+    loginValid: (time)=>{
+      return getLoginValid(time);
     }
   };
 };

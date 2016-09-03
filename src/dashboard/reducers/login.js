@@ -125,4 +125,4 @@ const getLogin = (state)=>{
   return false;
 };
 
-export {Login, LoginSaga, loginAction, logoutAction, getLogin};
+export {Login, LoginSaga, loginAction, logoutAction, getLogin, getLoginExpiresAt, getLoginValid};
