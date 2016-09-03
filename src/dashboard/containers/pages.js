@@ -78,19 +78,28 @@ class PageEdit extends React.Component {
   }
 }
 
+const noerr = {'pageid': false, 'title': false, 'tags': false, 'content': false};
+
 class Pages extends React.Component {
   constructor(props){
     super(props);
-    this.state = {edit: false};
+    this.state = {edit: false,
+      error: {
+        'pageid': false,
+        'title': false,
+        'tags': false,
+        'content': false
+      }
+    };
   }
 
   componentWillMount(){
     this.props.fetchPagelist();
   }
 
-  validate(pageObject){
+  locateErr(pageObject){
     const {pageid, title, tags, content} = pageObject;
-    return true;
+    return false;
   }
 
   render(){
@@ -106,7 +115,7 @@ class Pages extends React.Component {
         <div>
           <ul className="tablist">
             {this.props.pagelist.content.map((i)=>{
-              return <li onClick={()=>{this.setState({edit: false}); this.props.fetchPage(i);}} key={i}>{i}</li>;
+              return <li onClick={()=>{this.setState({...this.state, error: noerr, edit: false}); this.props.fetchPage(i);}} key={i}>{i}</li>;
             })}
           </ul>
         </div>
@@ -117,19 +126,21 @@ class Pages extends React.Component {
         <div>
           {!this.state.edit &&
             <PageDisplay content={this.props.page.content}
-              edit={()=>{this.setState({edit: true});}}/>}
+              edit={()=>{this.setState({...this.state, edit: true});}}/>}
           {this.state.edit &&
             <PageEdit content={this.props.page.content}
               save={(data)=>{
-                if(this.validate(data)){
-                  parser(data);
-                  this.setState({edit: false});
+                const errs = this.locateErr(data);
+                if(errs){
+                  this.setState({...this.state, error: errs});
+                } else {
+                  this.setState({...this.state, edit: false});
                   console.log(data);
-                } else {  
-                  this.setState({...this.state, error: err});
                 }
               }}
-              cancel={()=>{this.setState({edit: false});}}/>}
+              cancel={()=>{this.setState({...this.state, error: noerr, edit: false});}}
+            />
+          }
           {this.state.error &&
             <div style={errStyle}>
               <h6>{this.state.error.type}</h6>
