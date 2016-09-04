@@ -24,6 +24,7 @@ class DashApp extends React.Component {
     const sidebarList = [
       ['Home', '/'],
       ['Pages', '/pages'],
+      ['Config', '/config']
     ];
 
     return <div>
