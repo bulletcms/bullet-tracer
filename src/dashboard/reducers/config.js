@@ -91,3 +91,45 @@ const fetchConfigSagaHelper = function*(action){
 const FetchConfigSaga = function*(){
   yield* takeLatest(ACTIONS.fetchConfig, fetchConfigSagaHelper);
 };
+
+
+/////////////
+// Reducer //
+/////////////
+
+const defaultState = Immutable.fromJS({
+  configLoading: false,
+  configFailed: false,
+  config: {},
+  lastUpdate: Date.now(),
+  requestLoading: false,
+  requestFailed: false,
+  request: false
+});
+
+const Config = (state=defaultState, action)=>{
+  switch(action.type){
+    case ACTIONS.pageLoading:
+      return state.set('pageLoading', true).set('pageFailed', false);
+    case ACTIONS.fetchSuccess:
+      return state.set('pageLoading', false).set('pageFailed', false).set('lastUpdate', Date.now()).set('page', action.payload);
+    case ACTIONS.fetchFail:
+      return state.set('pageLoading', false).set('pageFailed', true);
+    case ACTIONS.newPage:
+      return state.set('pageLoading', false).set('pageFailed', false).set('page', {pageid: '', title: '', tags: [], content: ''});
+    case ACTIONS.requestLoading:
+      return state.set('requestLoading', true).set('requestFailed', false);
+    case ACTIONS.requestSuccess:
+      return state.set('requestLoading', false).set('requestFailed', false).set('request', action.payload);
+    case ACTIONS.requestFail:
+      return state.set('requestLoading', false).set('requestFailed', true);
+    case ACTIONS.pagelistLoading:
+      return state.set('pagelistLoading', true).set('pagelistFailed', false);
+    case ACTIONS.pagelistSuccess:
+      return state.set('pagelistLoading', false).set('pagelistFailed', false).set('pagelist', action.payload);
+    case ACTIONS.pagelistFail:
+      return state.set('pagelistLoading', false).set('pagelistFailed', true);
+    default:
+      return state;
+  }
+};
