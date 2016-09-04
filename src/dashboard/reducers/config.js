@@ -9,7 +9,7 @@ import {createSelector} from 'reselect';
 
 const ACTIONS = {
   fetchConfig: Symbol('fetchConfig'),
-  configLoading: Symbol('pageLoading'),
+  configLoading: Symbol('configLoading'),
   fetchSuccess: Symbol('fetchSuccess'),
   fetchFail: Symbol('fetchFail'),
   requestLoading: Symbol('requestLoading'),
@@ -109,27 +109,66 @@ const defaultState = Immutable.fromJS({
 
 const Config = (state=defaultState, action)=>{
   switch(action.type){
-    case ACTIONS.pageLoading:
-      return state.set('pageLoading', true).set('pageFailed', false);
+    case ACTIONS.configLoading:
+      return state.set('configLoading', true).set('configFailed', false);
     case ACTIONS.fetchSuccess:
-      return state.set('pageLoading', false).set('pageFailed', false).set('lastUpdate', Date.now()).set('page', action.payload);
+      return state.set('configLoading', false).set('configFailed', false).set('lastUpdate', Date.now()).setIn(['config', action.configid], action.payload);
     case ACTIONS.fetchFail:
-      return state.set('pageLoading', false).set('pageFailed', true);
-    case ACTIONS.newPage:
-      return state.set('pageLoading', false).set('pageFailed', false).set('page', {pageid: '', title: '', tags: [], content: ''});
+      return state.set('configLoading', false).set('configFailed', true);
     case ACTIONS.requestLoading:
       return state.set('requestLoading', true).set('requestFailed', false);
     case ACTIONS.requestSuccess:
       return state.set('requestLoading', false).set('requestFailed', false).set('request', action.payload);
     case ACTIONS.requestFail:
       return state.set('requestLoading', false).set('requestFailed', true);
-    case ACTIONS.pagelistLoading:
-      return state.set('pagelistLoading', true).set('pagelistFailed', false);
-    case ACTIONS.pagelistSuccess:
-      return state.set('pagelistLoading', false).set('pagelistFailed', false).set('pagelist', action.payload);
-    case ACTIONS.pagelistFail:
-      return state.set('pagelistLoading', false).set('pagelistFailed', true);
     default:
       return state;
   }
+};
+
+
+//////////////
+// Selector //
+//////////////
+
+const getConfigLoading = (state)=>{
+  return state.Config.get('configLoading');
+};
+
+const getConfigFailed = (state)=>{
+  return state.Config.get('configFailed');
+};
+
+const getConfigContent = (state)=>{
+  return state.Config.get('config');
+};
+
+const makeGetConfig = ()=>{
+  return createSelector(
+    [getConfigLoading, getConfigFailed, getConfigContent],
+    (loading, failed, content)=>{
+      if(loading){
+        return {loading: true};
+      } else if(failed){
+        return {loading: false, failed: true};
+      }
+      if(content){
+        return {
+          loading: false,
+          failed: false,
+          content: content
+        };
+      } else {
+        return {
+          loading: false,
+          failed: false,
+          content: false
+        };
+      }
+    }
+  );
+};
+
+const getRequest = (state)=>{
+  return state.Config.get('request');
 };
