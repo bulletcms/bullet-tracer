@@ -13,6 +13,7 @@ class ConfigDisplay extends React.Component{
    * props:
    *   title: title of model
    *   model: model to display
+   *   edit: function to call when editing
    */
   render(){
     return <div>
@@ -24,7 +25,11 @@ class ConfigDisplay extends React.Component{
         </div>;
       })}
       <div className="button-row">
-        <button className="button-outline">
+        <button className="button-outline" onClick={()=>{
+          if(this.props.edit){
+            this.props.edit();
+          }
+        }}>
           Edit
         </button>
       </div>
@@ -33,9 +38,14 @@ class ConfigDisplay extends React.Component{
 }
 
 class ConfigEdit extends React.Component{
+  /**
+   * props:
+   *   title: title of model
+   *   model: model to edit
+   */
   render(){
     return <div>
-      Config Edit
+      <h4>{this.props.title}</h4>
     </div>;
   }
 }
@@ -66,8 +76,11 @@ class Config extends React.Component{
       {(!this.props.config.loading && !this.props.config.failed) && this.props.config.content &&
         <div>
           {!this.state.edit && Object.keys(this.props.config.content).map((i)=>{
-            return <ConfigDisplay key={i} title={i} model={this.props.config.content[i]}/>
+            return <ConfigDisplay key={i} title={i} model={this.props.config.content[i]} edit={()=>{this.setState({...this.state, edit: i});}}/>
           })}
+          {this.state.edit &&
+            <ConfigEdit title={this.state.edit} model={this.props.config.content[this.state.edit]}/>
+          }
         </div>
       }
     </div>;
