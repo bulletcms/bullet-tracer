@@ -1,7 +1,8 @@
 import Immutable from 'immutable';
-import {put, call, select} from 'redux-saga/effects';
+import {take, put, call} from 'redux-saga/effects';
 import {takeLatest} from 'redux-saga';
 import {createSelector} from 'reselect';
+
 
 /////////////
 // Actions //
@@ -12,6 +13,7 @@ const ACTIONS = {
   configLoading: Symbol('configLoading'),
   fetchSuccess: Symbol('fetchSuccess'),
   fetchFail: Symbol('fetchFail'),
+  fetchAllConfigs: Symbol('fetchAllConfigs'),
   requestLoading: Symbol('requestLoading'),
   requestSuccess: Symbol('requestSuccess'),
   requestFail: Symbol('requestFail'),
@@ -90,6 +92,21 @@ const fetchConfigSagaHelper = function*(action){
 
 const FetchConfigSaga = function*(){
   yield* takeLatest(ACTIONS.fetchConfig, fetchConfigSagaHelper);
+};
+
+
+const fetchAllConfigsAction = (baseurl)=>{
+  return {
+    type: ACTIONS.fetchAllConfigs,
+    baseurl: baseurl
+  };
+};
+
+const FetchAllConfigsSaga = function*(){
+  while(true){
+    const fetchallconfigsaction = yield take(ACTIONS.fetchAllConfigs);
+    
+  }
 };
 
 

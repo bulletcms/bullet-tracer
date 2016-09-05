@@ -1,5 +1,5 @@
 import Immutable from 'immutable';
-import {put, call, select} from 'redux-saga/effects';
+import {put, call} from 'redux-saga/effects';
 import {takeLatest} from 'redux-saga';
 import {createSelector} from 'reselect';
 
