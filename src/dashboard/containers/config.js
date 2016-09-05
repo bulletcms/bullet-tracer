@@ -38,14 +38,50 @@ class ConfigDisplay extends React.Component{
 }
 
 class ConfigEdit extends React.Component{
+  constructor(props){
+    super(props);
+    this.state = {data: Immutable.fromJS(this.props.model)};
+  }
+
   /**
    * props:
    *   title: title of model
    *   model: model to edit
+   *   error: error object
+   *   cancel: function to call when cancelling edit
+   *   check: function to call when verifying data
+   *   save: function to call when saving edits
    */
   render(){
     return <div>
       <h4>{this.props.title}</h4>
+      <div className="button-row">
+        <button className="button-outline" onClick={()=>{
+          if(this.props.cancel){
+            this.props.cancel();
+          }
+        }}>
+          Cancel
+        </button>
+        <button className="button-outline" onClick={()=>{
+          if(this.props.check){
+            this.props.check(this.state.data.toJSON());
+          }
+        }}>
+          Check
+        </button>
+        <button className="button-primary" onClick={()=>{
+          if(this.props.save){
+            this.props.save(this.state.data.toJSON());
+          }
+        }}>
+          Save
+        </button>
+      </div>
+      {Object.keys(this.props.model).map((i)=>{
+        return <Input key={i} label={i} value={JSON.stringify(this.state.data.get(i))} error={this.props.error && this.props.error[i]}
+          handleBlur={(value)=>{this.setState({data: this.state.data.set(i, value)});}}/>
+      })}
     </div>;
   }
 }
@@ -76,10 +112,14 @@ class Config extends React.Component{
       {(!this.props.config.loading && !this.props.config.failed) && this.props.config.content &&
         <div>
           {!this.state.edit && Object.keys(this.props.config.content).map((i)=>{
-            return <ConfigDisplay key={i} title={i} model={this.props.config.content[i]} edit={()=>{this.setState({...this.state, edit: i});}}/>
+            const err = {};
+            Object.keys(this.props.config.content[i]).map((j)=>{
+              err[j] = false;
+            });
+            return <ConfigDisplay key={i} title={i} model={this.props.config.content[i]} edit={()=>{this.setState({...this.state, edit: i, error: err});}}/>
           })}
           {this.state.edit &&
-            <ConfigEdit title={this.state.edit} model={this.props.config.content[this.state.edit]}/>
+            <ConfigEdit title={this.state.edit} model={this.props.config.content[this.state.edit]} error={this.state.error}/>
           }
         </div>
       }
