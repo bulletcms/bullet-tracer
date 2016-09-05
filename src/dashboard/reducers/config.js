@@ -95,17 +95,33 @@ const FetchConfigSaga = function*(){
 };
 
 
-const fetchAllConfigsAction = (baseurl)=>{
+const fetchAllConfigsAction = (baseurl, configslist)=>{
   return {
     type: ACTIONS.fetchAllConfigs,
-    baseurl: baseurl
+    baseurl: baseurl,
+    configslist: configslist
   };
 };
 
 const FetchAllConfigsSaga = function*(){
   while(true){
     const fetchallconfigsaction = yield take(ACTIONS.fetchAllConfigs);
-    
+    const configslist = fetchallconfigsaction.configslist;
+    try {
+      for(let i of configslist){
+        const res = yield call(fetch, fetchallconfigsaction.baseurl + '/' + i);
+        const payload = yield call([res, res.json]);
+        yield put({
+          type: ACTIONS.fetchSuccess,
+          configid: i,
+          payload: payload
+        });
+      }
+    } catch(err){
+      yield put({
+        type: ACTIONS.fetchFail
+      });
+    }
   }
 };
 
@@ -190,4 +206,4 @@ const getConfigRequest = (state)=>{
   return state.Config.get('request');
 };
 
-export {Config, FetchConfigSaga, fetchConfigAction, makeGetConfig, getConfigRequest};
+export {Config, FetchConfigSaga, FetchAllConfigsSaga, fetchConfigAction, fetchAllConfigsAction, makeGetConfig, getConfigRequest};

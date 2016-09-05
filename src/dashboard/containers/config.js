@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import Immutable from 'immutable';
 
 import {CONFIG} from 'dashboard/config';
-import {fetchConfigAction} from 'dashboard/reducers/actions';
+import {fetchConfigAction, fetchAllConfigsAction} from 'dashboard/reducers/actions';
 import {makeGetConfig, getConfigRequest, getLogin, getLoginExpiresAt, getLoginValid} from 'dashboard/reducers/selectors';
 import {Input, Textarea} from 'views';
 
@@ -16,17 +16,20 @@ class Config extends React.Component{
     };
   }
 
+  componentWillMount(){
+    this.props.fetchAllConfigs();
+  }
+
   render(){
     const configlist = ['navigation'];
     return <div>
       <h1>Config</h1>
-      <div>
-        <ul className="tablist">
-          {configlist.map((i)=>{
-            return <li onClick={()=>{this.setState({...this.state, error: false, edit: false}); this.props.fetchConfig(i);}} key={i}>{i}</li>;
-          })}
-        </ul>
-      </div>
+      {!this.props.config.loading && <div className="button-row">
+        <button className="button-outline"
+          onClick={()=>{
+            this.props.fetchAllConfigs();
+          }}>Refresh</button>
+      </div>}
       {(!this.props.config.loading && !this.props.config.failed) && this.props.config.content &&
         JSON.stringify(this.props.config.content)
       }
@@ -50,6 +53,9 @@ const mapDispatchToProps = (dispatch)=>{
   return {
     fetchConfig: (configid, method=false, body=false)=>{
       dispatch(fetchConfigAction(CONFIG.retrieve('baseConfigUrl'), configid, method, body));
+    },
+    fetchAllConfigs: ()=>{
+      dispatch(fetchAllConfigsAction(CONFIG.retrieve('baseConfigUrl'), ['navigation']));
     },
     loginValid: (time)=>{
       return getLoginValid(time);
