@@ -7,6 +7,39 @@ import {fetchConfigAction, fetchAllConfigsAction} from 'dashboard/reducers/actio
 import {makeGetConfig, getConfigRequest, getLogin, getLoginExpiresAt, getLoginValid} from 'dashboard/reducers/selectors';
 import {Input, Textarea} from 'views';
 
+
+class ConfigDisplay extends React.Component{
+  /**
+   * props:
+   *   title: title of model
+   *   model: model to display
+   */
+  render(){
+    return <div>
+      <h4>{this.props.title}</h4>
+      {Object.keys(this.props.model).map((i)=>{
+        return <div key={i}>
+          <h6>{i}</h6>
+          <span>{JSON.stringify(this.props.model[i])}</span>
+        </div>;
+      })}
+      <div className="button-row">
+        <button className="button-outline">
+          Edit
+        </button>
+      </div>
+    </div>;
+  }
+}
+
+class ConfigEdit extends React.Component{
+  render(){
+    return <div>
+      Config Edit
+    </div>;
+  }
+}
+
 class Config extends React.Component{
   constructor(props){
     super(props);
@@ -31,7 +64,11 @@ class Config extends React.Component{
           }}>Refresh</button>
       </div>}
       {(!this.props.config.loading && !this.props.config.failed) && this.props.config.content &&
-        JSON.stringify(this.props.config.content)
+        <div>
+          {!this.state.edit && Object.keys(this.props.config.content).map((i)=>{
+            return <ConfigDisplay key={i} title={i} model={this.props.config.content[i]}/>
+          })}
+        </div>
       }
     </div>;
   }
