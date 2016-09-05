@@ -1,4 +1,5 @@
-import {makeGetPage, getRequest, makeGetPagelist} from './pages';
+import {makeGetPage, getPageRequest, makeGetPagelist} from './pages';
+import {makeGetConfig, getConfigRequest} from './config';
 import {getLogin, getLoginExpiresAt, getLoginValid} from './login';
 
-export {makeGetPage, getRequest, makeGetPagelist, getLogin, getLoginExpiresAt, getLoginValid};
+export {makeGetPage, getPageRequest, makeGetPagelist, makeGetConfig, getConfigRequest, getLogin, getLoginExpiresAt, getLoginValid};

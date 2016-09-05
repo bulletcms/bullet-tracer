@@ -140,7 +140,7 @@ const getConfigFailed = (state)=>{
 };
 
 const getConfigContent = (state)=>{
-  return state.Config.get('config');
+  return state.Config.get('config').toJSON();
 };
 
 const makeGetConfig = ()=>{
@@ -169,6 +169,8 @@ const makeGetConfig = ()=>{
   );
 };
 
-const getRequest = (state)=>{
+const getConfigRequest = (state)=>{
   return state.Config.get('request');
 };
+
+export {Config, FetchConfigSaga, fetchConfigAction, makeGetConfig, getConfigRequest};

@@ -5,7 +5,7 @@ import {parser} from 'bullet-mark';
 
 import {CONFIG} from 'dashboard/config';
 import {fetchPageAction, newPageAction, fetchPagelistAction} from 'dashboard/reducers/actions';
-import {makeGetPage, getRequest, makeGetPagelist, getLogin, getLoginExpiresAt, getLoginValid} from 'dashboard/reducers/selectors';
+import {makeGetPage, getPageRequest, makeGetPagelist, getLogin, getLoginExpiresAt, getLoginValid} from 'dashboard/reducers/selectors';
 import {Input, Textarea, Modal} from 'views';
 
 const h = React.createElement;
@@ -275,7 +275,7 @@ const makeMapStateToProps = ()=>{
       pagelist: getPagelist(state),
       logininfo: getLogin(state),
       loginExpiresAt: getLoginExpiresAt(state),
-      request: getRequest(state)
+      request: getPageRequest(state)
     };
   };
 };
