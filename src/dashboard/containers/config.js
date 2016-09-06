@@ -157,12 +157,22 @@ class Config extends React.Component{
                   this.setState({...this.state, error: err, edit: false});
                   if(this.props.logininfo && this.props.loginValid(this.props.loginExpiresAt)){
                     const {username, idToken} = this.props.logininfo;
-                    this.props.fetchConfig(data.configid, 'PUT', {username, idToken, data});
+                    const deepState = {};
+                    Object.keys(data).map((i)=>{
+                      deepState[i] = JSON.parse(data[i]);
+                    });
+                    this.props.fetchConfig(deepState.configid, 'PUT', {username, idToken, data: deepState});
                   }
                 }
               }}/>
           }
         </div>
+      }
+      {this.props.request &&
+        <pre className="request-status">
+          {this.props.request.status && <span>request success for config: {this.props.request.configid}</span>}
+          {!this.props.request.status && <span>request failed for config: {this.props.request.configid}</span>}
+        </pre>
       }
     </div>;
   }
