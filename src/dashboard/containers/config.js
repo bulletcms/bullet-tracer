@@ -99,6 +99,10 @@ class Config extends React.Component{
     this.props.fetchAllConfigs();
   }
 
+  validate(configObject){
+    
+  }
+
   render(){
     const configlist = ['navigation'];
     return <div>
@@ -119,7 +123,16 @@ class Config extends React.Component{
             return <ConfigDisplay key={i} title={i} model={this.props.config.content[i]} edit={()=>{this.setState({...this.state, edit: i, error: err});}}/>
           })}
           {this.state.edit &&
-            <ConfigEdit title={this.state.edit} model={this.props.config.content[this.state.edit]} error={this.state.error}/>
+            <ConfigEdit title={this.state.edit} model={this.props.config.content[this.state.edit]} error={this.state.error}
+              cancel={()=>{
+                this.setState({...this.state, edit: false, error: false});
+              }}
+              check={(data)=>{
+
+              }}
+              save={(data)=>{
+
+              }}/>
           }
         </div>
       }

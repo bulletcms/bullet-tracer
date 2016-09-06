@@ -122,7 +122,7 @@ class Pages extends React.Component {
     this.props.fetchPagelist();
   }
 
-  locateErr(pageObject){
+  validate(pageObject){
     const {pageid, title, tags, content} = pageObject;
     const error = {
       'pageid': false,
@@ -190,7 +190,7 @@ class Pages extends React.Component {
           {this.state.edit && !this.state.newpage &&
             <PageEdit content={this.props.page.content} error={this.state.error}
               save={(data)=>{
-                const errs = this.locateErr(data);
+                const errs = this.validate(data);
                 if(errs){
                   this.setState({...this.state, error: errs});
                 } else {
@@ -202,7 +202,7 @@ class Pages extends React.Component {
                 }
               }}
               check={(data)=>{
-                const errs = this.locateErr(data);
+                const errs = this.validate(data);
                 if(errs){
                   this.setState({...this.state, error: errs});
                 } else {
@@ -218,7 +218,7 @@ class Pages extends React.Component {
           {this.state.edit && this.state.newpage &&
             <PageEdit content={this.props.page.content} error={this.state.error}
               save={(data)=>{
-                const errs = this.locateErr(data);
+                const errs = this.validate(data);
                 if(errs){
                   this.setState({...this.state, error: errs});
                 } else {
@@ -230,7 +230,7 @@ class Pages extends React.Component {
                 }
               }}
               check={(data)=>{
-                const errs = this.locateErr(data);
+                const errs = this.validate(data);
                 if(errs){
                   this.setState({...this.state, error: errs});
                 } else {
