@@ -15,7 +15,9 @@ const ACTIONS = {
   loginFail: Symbol('loginFail'),
   logoutSuccess: Symbol('logoutSuccess'),
   newUser: Symbol('newUser'),
-  newUserSuccess: Symbol('newUserSuccess')
+  newUserSuccess: Symbol('newUserSuccess'),
+  signInWithGoogle: Symbol('signInWithGoogle'),
+  signInWithGoogleSuccess: Symbol('signInWithGoogleSuccess')
 };
 
 const loginAction = (clientId, username)=>{
@@ -94,8 +96,35 @@ const newUserSagaHelper = function*(action){
 };
 
 const NewUserSaga = function*(){
-  yield* takeLatest(ACTIONS.fetchPage, fetchPageSagaHelper);
+  yield* takeLatest(ACTIONS.newUser, newUserSagaHelper);
 };
+
+const signInWithGoogleAction = (clientId)=>{
+  return {
+    type: ACTIONS.signInWithGoogle,
+    clientId: clientId
+  };
+};
+
+const signInWithGoogleSagaHelper = function*(action){
+  yield cps([window.gapi, window.gapi.load], 'auth2');
+  const auth2 = window.gapi.auth2.init({
+    client_id: action.clientId
+  });
+  const googleUser = yield call([auth2, auth2.signIn])
+  const signedIn = googleUser.isSignedIn();
+  if(signedIn){
+    const basicProfile = googleUser.getBasicProfile();
+
+    yield put({
+      type: ACTIONS.signInWithGoogleSuccess,
+    });
+  }
+};
+
+const SignInWithGoogleSaga = function*(){
+  yield* takeLatest(ACTIONS.signInWithGoogle, signInWithGoogleSagaHelper)
+}
 
 
 /////////////
@@ -169,4 +198,4 @@ const getNewUserRequest = (state)=>{
 };
 
 
-export {Login, LoginSaga, NewUserSaga, loginAction, logoutAction, newUserAction, getLogin, getLoginExpiresAt, getLoginValid, getNewUserRequest};
+export {Login, LoginSaga, NewUserSaga, SignInWithGoogleSaga, loginAction, logoutAction, newUserAction, signInWithGoogleAction, getLogin, getLoginExpiresAt, getLoginValid, getNewUserRequest};
