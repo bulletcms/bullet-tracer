@@ -3,7 +3,7 @@ import createSagaMiddleware from 'redux-saga';
 
 import {Pages, FetchPageSaga, FetchPagelistSaga} from './pages';
 import {Config, FetchConfigSaga, FetchAllConfigsSaga} from './config';
-import {Login, LoginSaga} from './login';
+import {Login, LoginSaga, NewUserSaga} from './login';
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -17,5 +17,6 @@ sagaMiddleware.run(FetchPagelistSaga);
 sagaMiddleware.run(FetchConfigSaga);
 sagaMiddleware.run(FetchAllConfigsSaga);
 sagaMiddleware.run(LoginSaga);
+sagaMiddleware.run(NewUserSaga);
 
 export {store};

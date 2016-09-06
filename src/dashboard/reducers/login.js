@@ -1,5 +1,6 @@
 import Immutable from 'immutable';
 import {take, put, call, cps} from 'redux-saga/effects';
+import {takeLatest} from 'redux-saga';
 import {createSelector} from 'reselect';
 
 
@@ -12,7 +13,9 @@ const ACTIONS = {
   logout: Symbol('logout'),
   loginSuccess: Symbol('loginSuccess'),
   loginFail: Symbol('loginFail'),
-  logoutSuccess: Symbol('logoutSuccess')
+  logoutSuccess: Symbol('logoutSuccess'),
+  newUser: Symbol('newUser'),
+  newUserSuccess: Symbol('newUserSuccess')
 };
 
 const loginAction = (clientId, username)=>{
@@ -61,6 +64,39 @@ const LoginSaga = function*(){
   }
 };
 
+const newUserAction = (baseurl, body)=>{
+  return {
+    type: ACTIONS.newUser,
+    baseurl: baseurl,
+    body: body
+  };
+};
+
+const newUserSagaHelper = function*(action){
+  const options = {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(action.body)
+  };
+
+  try {
+    const res = yield call(fetch, action.baseurl, options);
+    const payload = yield call([res, res.json]);
+    yield put({
+      type: ACTIONS.newUserSuccess,
+      payload: payload
+    });
+  } catch(err){
+  }
+};
+
+const NewUserSaga = function*(){
+  yield* takeLatest(ACTIONS.fetchPage, fetchPageSagaHelper);
+};
+
 
 /////////////
 // Reducer //
@@ -70,7 +106,8 @@ const defaultState = Immutable.fromJS({
   loggedIn: false,
   expiresAt: false,
   idToken: false,
-  username: false
+  username: false,
+  newUserRequest: false
 });
 
 
@@ -80,6 +117,8 @@ const Login = (state=defaultState, action)=>{
       return state.set('loggedIn', true).set('username', action.username).set('idToken', action.idToken).set('expiresAt', action.expiresAt);
     case ACTIONS.logoutSuccess:
       return state.set('loggedIn', false).set('username', false).set('idToken', false).set('expiresAt', false);
+    case ACTIONS.newUserSuccess:
+      return state.set('newUserRequest', action.payload);
     default:
       return state;
   }
@@ -125,4 +164,9 @@ const getLogin = (state)=>{
   return false;
 };
 
-export {Login, LoginSaga, loginAction, logoutAction, getLogin, getLoginExpiresAt, getLoginValid};
+const getNewUserRequest = (state)=>{
+  return state.Login.get('newUserRequest');
+};
+
+
+export {Login, LoginSaga, NewUserSaga, loginAction, logoutAction, newUserAction, getLogin, getLoginExpiresAt, getLoginValid, getNewUserRequest};
