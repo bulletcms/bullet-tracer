@@ -40,7 +40,11 @@ class ConfigDisplay extends React.Component{
 class ConfigEdit extends React.Component{
   constructor(props){
     super(props);
-    this.state = {data: Immutable.fromJS(this.props.model)};
+    const shallowState = {};
+    Object.keys(this.props.model).map((i)=>{
+      shallowState[i] = JSON.stringify(this.props.model[i]);
+    });
+    this.state = {data: Immutable.fromJS(shallowState)};
   }
 
   /**
@@ -79,7 +83,7 @@ class ConfigEdit extends React.Component{
         </button>
       </div>
       {Object.keys(this.props.model).map((i)=>{
-        return <Input key={i} label={i} value={JSON.stringify(this.state.data.get(i))} error={this.props.error && this.props.error[i]}
+        return <Input key={i} label={i} value={this.state.data.get(i)} error={this.props.error && this.props.error[i]}
           handleBlur={(value)=>{this.setState({data: this.state.data.set(i, value)});}}/>
       })}
     </div>;
@@ -109,7 +113,6 @@ class Config extends React.Component{
       } catch(err){
         failed = true;
         error[i] = err.toString();
-        console.log(err);
       }
     });
     if(failed){
