@@ -100,7 +100,23 @@ class Config extends React.Component{
   }
 
   validate(configObject){
-    
+    let failed = false;
+    const error = {};
+    Object.keys(configObject).map((i)=>{
+      try{
+        JSON.parse(configObject[i]);
+        error[i] = false;
+      } catch(err){
+        failed = true;
+        error[i] = err.toString();
+        console.log(err);
+      }
+    });
+    if(failed){
+      return [true, error];
+    } else {
+      return [false, error];
+    }
   }
 
   render(){
@@ -128,10 +144,19 @@ class Config extends React.Component{
                 this.setState({...this.state, edit: false, error: false});
               }}
               check={(data)=>{
-
+                this.setState({...this.state, error: this.validate(data)[1]});
               }}
               save={(data)=>{
-
+                const [failed, err] = this.validate(data);
+                if(failed){
+                  this.setState({...this.state, error: err});
+                } else {
+                  this.setState({...this.state, error: err, edit: false});
+                  if(this.props.logininfo && this.props.loginValid(this.props.loginExpiresAt)){
+                    const {username, idToken} = this.props.logininfo;
+                    this.props.fetchConfig(data.configid, 'PUT', {username, idToken, data});
+                  }
+                }
               }}/>
           }
         </div>
