@@ -6,5 +6,6 @@ import {setupAction} from './setup';
 export {
   fetchPageAction, newPageAction, fetchPagelistAction,
   fetchConfigAction, fetchAllConfigsAction,
-  loginAction, logoutAction, newUserAction, signInWithGoogleAction
+  loginAction, logoutAction, newUserAction, signInWithGoogleAction,
+  setupAction
 };

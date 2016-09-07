@@ -6,5 +6,6 @@ import {getSetupRequest} from './setup';
 export {
   makeGetPage, getPageRequest, makeGetPagelist,
   makeGetConfig, getConfigRequest,
-  getLogin, getLoginExpiresAt, getLoginValid, getNewUserRequest
+  getLogin, getLoginExpiresAt, getLoginValid, getNewUserRequest,
+  getSetupRequest
 };

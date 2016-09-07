@@ -17,7 +17,6 @@ class DashApp extends React.Component {
   }
 
   componentWillMount(){
-    // this.props.fetchConfig();
   }
 
   render(){

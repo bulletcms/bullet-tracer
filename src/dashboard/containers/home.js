@@ -2,8 +2,8 @@ import React from 'react';
 import {connect} from 'react-redux';
 
 import {CONFIG} from 'dashboard/config';
-import {newUserAction, signInWithGoogleAction} from 'dashboard/reducers/actions';
-import {getNewUserRequest} from 'dashboard/reducers/selectors';
+import {newUserAction, signInWithGoogleAction, setupAction} from 'dashboard/reducers/actions';
+import {getNewUserRequest, getSetupRequest} from 'dashboard/reducers/selectors';
 import {Input, Modal} from 'views';
 
 
@@ -115,7 +115,8 @@ class Home extends React.Component{
 
 const mapStateToProps = (state)=>{
   return {
-    newUserRequest: getNewUserRequest(state)
+    newUserRequest: getNewUserRequest(state),
+    setupRequest: getSetupRequest(state)
   };
 };
 
@@ -126,6 +127,9 @@ const mapDispatchToProps = (dispatch, props)=>{
     },
     newUser: (body)=>{
       dispatch(newUserAction(CONFIG.retrieve('baseUsersUrl'), body));
+    },
+    setup: (body)=>{
+      dispatch(setupAction(CONFIG.retrieve('baseSetupUrl'), body));
     }
   };
 };
