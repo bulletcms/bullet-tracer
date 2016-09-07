@@ -16,8 +16,7 @@ const ACTIONS = {
   logoutSuccess: Symbol('logoutSuccess'),
   newUser: Symbol('newUser'),
   newUserSuccess: Symbol('newUserSuccess'),
-  signInWithGoogle: Symbol('signInWithGoogle'),
-  signInWithGoogleSuccess: Symbol('signInWithGoogleSuccess')
+  signInWithGoogle: Symbol('signInWithGoogle')
 };
 
 const loginAction = (clientId, username)=>{
@@ -37,10 +36,13 @@ const logoutAction = ()=>{
 const LoginSaga = function*(){
   while(true){
     const loginaction = yield take(ACTIONS.login);
-    yield cps([window.gapi, window.gapi.load], 'auth2');
-    const auth2 = window.gapi.auth2.init({
-      client_id: loginaction.clientId
-    });
+    if(!window.gapi.auth2){
+      yield cps([window.gapi, window.gapi.load], 'auth2');
+      window.gapi.auth2.init({
+        client_id: action.clientId
+      });
+    }
+    const auth2 = window.gapi.auth2.getAuthInstance();
     const googleUser = yield call([auth2, auth2.signIn])
     const signedIn = googleUser.isSignedIn();
     if(signedIn){
@@ -99,26 +101,34 @@ const NewUserSaga = function*(){
   yield* takeLatest(ACTIONS.newUser, newUserSagaHelper);
 };
 
-const signInWithGoogleAction = (clientId)=>{
+const signInWithGoogleAction = (clientId, callback)=>{
   return {
     type: ACTIONS.signInWithGoogle,
-    clientId: clientId
+    clientId: clientId,
+    callback: callback
   };
 };
 
 const signInWithGoogleSagaHelper = function*(action){
-  yield cps([window.gapi, window.gapi.load], 'auth2');
-  const auth2 = window.gapi.auth2.init({
-    client_id: action.clientId
-  });
+  if(!window.gapi.auth2){
+    yield cps([window.gapi, window.gapi.load], 'auth2');
+    window.gapi.auth2.init({
+      client_id: action.clientId
+    });
+  }
+  const auth2 = window.gapi.auth2.getAuthInstance();
   const googleUser = yield call([auth2, auth2.signIn])
   const signedIn = googleUser.isSignedIn();
   if(signedIn){
     const basicProfile = googleUser.getBasicProfile();
+    const name = basicProfile.getGivenName();
+    const lastName = basicProfile.getFamilyName();
+    const fullName = basicProfile.getName();
+    const email = basicProfile.getEmail();
+    const googleId = basicProfile.getId();
+    const profilePicture = basicProfile.getImageUrl();
 
-    yield put({
-      type: ACTIONS.signInWithGoogleSuccess,
-    });
+    yield call(action.callback, {name, lastName, fullName, email, googleId, profilePicture});
   }
 };
 
