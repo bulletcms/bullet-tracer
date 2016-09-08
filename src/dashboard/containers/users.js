@@ -136,7 +136,7 @@ class User extends React.Component{
       {(!this.props.user.loading && !this.props.user.failed) && this.props.user.content &&
         <div>
           {!this.state.edit &&
-            <UserDisplay model={this.props.user.content} edit={()=>{this.setState({...this.state, edit: true, error: err});}}/>
+            <UserDisplay model={this.props.user.content} edit={()=>{this.setState({...this.state, edit: true, error: false});}}/>
           }
           {this.state.edit &&
             <UserEdit model={this.props.user.content} error={this.state.error}
