@@ -125,7 +125,10 @@ class User extends React.Component{
       <Input label="username" handleBlur={(value)=>{this.setState({...this.state, username: value})}}/>
       <div className="button-row">
         <button className="button-outline-primary" onClick={()=>{
-          this.props.fetchUser(this.state.username);
+          if(this.props.logininfo && this.props.loginValid(this.props.loginExpiresAt)){
+            const {username, idToken} = this.props.logininfo;
+            this.props.fetchUser(this.state.username, 'GET', {username, idToken});
+          }
         }}>
           Get User
         </button>

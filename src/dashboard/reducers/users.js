@@ -40,7 +40,16 @@ const fetchUserSagaHelper = function*(action){
   }
 
   let options = false;
-  if(action.method){
+  if(action.method == 'GET'){
+    options = {
+      method: action.method,
+      headers: {
+        'Accept': 'application/json',
+        'username': action.body.username,
+        'idToken': action.body.idToken
+      }
+    };
+  } else if(action.method){
     options = {
       method: action.method,
       headers: {
@@ -56,14 +65,16 @@ const fetchUserSagaHelper = function*(action){
     if(options){
       if(options.method == 'PUT'){
         res = yield call(fetch, action.baseurl + '/' + action.username + '/tags', options);
+      } else if(options.method == 'GET'){
+        res = yield call(fetch, action.baseurl + '/' + action.username + '/private', options);
       } else {
         res = yield call(fetch, action.baseurl + '/' + action.username, options);
       }
     } else {
-      res = yield call(fetch, action.baseurl + '/' + action.username + '/private');
+      res = yield call(fetch, action.baseurl + '/' + action.username);
     }
     const payload = yield call([res, res.json]);
-    if(action.method){
+    if(action.method && action.method != 'GET'){
       yield put({
         type: ACTIONS.requestSuccess,
         username: action.username,
@@ -77,7 +88,7 @@ const fetchUserSagaHelper = function*(action){
       });
     }
   } catch(err) {
-    if(action.method){
+    if(action.method && action.method != 'GET'){
       yield put({
         type: ACTIONS.requestFail
       });
