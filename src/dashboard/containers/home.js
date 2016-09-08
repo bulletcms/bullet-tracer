@@ -144,8 +144,13 @@ class Home extends React.Component{
 
         <div className="button-row">
           <button className="button-primary" onClick={()=>{
-            this.props.newUser({data: this.state.newUser});
-            this.setState({...this.state, createUser: false, newUser: false, userErrors: false});
+            const [failed, error] = this.validate(this.state.newUser);
+            if(failed){
+              this.setState({...this.state, userErrors: error});
+            } else {
+              this.props.newUser({data: this.state.newUser});
+              this.setState({...this.state, createUser: false, newUser: false, userErrors: false});
+            }
           }}>Create Account</button>
         </div>
       </Modal>
@@ -178,8 +183,13 @@ class Home extends React.Component{
 
         <div className="button-row">
           <button className="button-primary" onClick={()=>{
-            this.props.setup({data: this.state.newUser});
-            this.setState({...this.state, beginSetup: false, newUser: false, userErrors: false});
+            const [failed, error] = this.validate(this.state.newUser);
+            if(failed){
+              this.setState({...this.state, userErrors: error});
+            } else {
+              this.props.setup({data: this.state.newUser});
+              this.setState({...this.state, beginSetup: false, newUser: false, userErrors: false});
+            }
           }}>Setup Bullet Server</button>
         </div>
       </Modal>
