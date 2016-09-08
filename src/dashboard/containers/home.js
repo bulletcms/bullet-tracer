@@ -139,7 +139,7 @@ class Home extends React.Component{
           <button className="button-primary" onClick={()=>{
             this.props.setup({data: this.state.newUser});
             this.setState({...this.state, beginSetup: false, newUser: false, userErrors: false});
-          }}>Create Account</button>
+          }}>Setup Bullet Server</button>
         </div>
       </Modal>
     </div>;
