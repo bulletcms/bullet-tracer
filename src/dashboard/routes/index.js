@@ -1,7 +1,7 @@
 import React from 'react';
 import {Router, Route, IndexRoute, Redirect, hashHistory} from 'react-router';
 
-import {DashApp, Home, Pages, Config} from 'dashboard/containers';
+import {DashApp, Home, Pages, Config, User} from 'dashboard/containers';
 import {Dne} from 'containers';
 
 
@@ -10,6 +10,7 @@ const routes = <Router history={hashHistory}>
     <IndexRoute component={Home}/>
     <Route path="/pages" component={Pages}/>
     <Route path="/config" component={Config}/>
+    <Route path="/users" component={User}/>
     <Route path="/404" component={Dne}/>
     <Redirect from="*" to="/404" />
   </Route>

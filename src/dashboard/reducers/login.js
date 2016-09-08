@@ -39,7 +39,7 @@ const LoginSaga = function*(){
     if(!window.gapi.auth2){
       yield cps([window.gapi, window.gapi.load], 'auth2');
       window.gapi.auth2.init({
-        client_id: action.clientId
+        client_id: loginaction.clientId
       });
     }
     const auth2 = window.gapi.auth2.getAuthInstance();
