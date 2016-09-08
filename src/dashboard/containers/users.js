@@ -5,7 +5,7 @@ import Immutable from 'immutable';
 import {CONFIG} from 'dashboard/config';
 import {fetchUserAction} from 'dashboard/reducers/actions';
 import {makeGetUser, getUserRequest, getLogin, getLoginExpiresAt, getLoginValid} from 'dashboard/reducers/selectors';
-import {Input} from 'views';
+import {Input, Modal} from 'views';
 
 
 class UserDisplay extends React.Component{
@@ -78,6 +78,12 @@ class UserEdit extends React.Component{
         }}>
           Save
         </button>
+        <button className="button-danger"
+          onClick={()=>{
+            if(this.props.delete){
+              this.props.delete(this.state.data.toJSON());
+            }
+          }}>Delete</button>
       </div>
       {Object.keys(this.props.model).map((i)=>{
         return <Input key={i} label={i} value={this.state.data.get(i)} error={this.props.error && this.props.error[i]}
@@ -93,7 +99,9 @@ class User extends React.Component{
     this.state = {
       username: "",
       edit: false,
-      error: false
+      error: false,
+      confirmDelete: false,
+      deleteId: false
     };
   }
 
@@ -122,12 +130,13 @@ class User extends React.Component{
   render(){
     return <div>
       <h1>Users</h1>
-      <Input label="username" handleBlur={(value)=>{this.setState({...this.state, username: value})}}/>
+      <Input label="username" value={this.state.username} handleBlur={(value)=>{this.setState({...this.state, username: value})}}/>
       <div className="button-row">
         <button className="button-outline-primary" onClick={()=>{
           if(this.props.logininfo && this.props.loginValid(this.props.loginExpiresAt)){
             const {username, idToken} = this.props.logininfo;
             this.props.fetchUser(this.state.username, 'GET', {username, idToken});
+            this.setState({...this.state, edit: false, error: false});
           }
         }}>
           Get User
@@ -161,6 +170,9 @@ class User extends React.Component{
                     this.props.fetchUser(deepState.username, 'PUT', {username, idToken, data: deepState});
                   }
                 }
+              }}
+              delete={(data)=>{
+                this.setState({...this.state, deleteId: JSON.parse(data.username), confirmDelete: true});
               }}/>
           }
         </div>
@@ -171,6 +183,20 @@ class User extends React.Component{
           {!this.props.request.status && <span>request failed for user: {this.props.request.username}</span>}
         </pre>
       }
+      <Modal isOpen={this.state.confirmDelete}>
+        <h1>Confirm Delete</h1>
+        <h4>username: {this.state.deleteId}</h4>
+        <div className="button-row">
+          <button onClick={()=>{this.setState({...this.state, deleteId: false, confirmDelete: false});}}>Cancel</button>
+          <button className="button-danger" onClick={()=>{
+            if(this.props.logininfo && this.props.loginValid(this.props.loginExpiresAt)){
+              const {username, idToken} = this.props.logininfo;
+              this.props.fetchUser(this.state.deleteId, 'DELETE', {username, idToken, data: {username: this.state.deleteId}});
+            }
+            this.setState({...this.state, deleteId: false, confirmDelete: false});
+          }}>Delete</button>
+        </div>
+      </Modal>
     </div>;
   }
 }

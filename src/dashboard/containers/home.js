@@ -47,7 +47,7 @@ class Home extends React.Component{
   }
 
   validate(userObject){
-    const {username, name, lastName, fullName, email, googleId, profilePicture} = pageObject;
+    const {username, name, lastName, fullName, email, googleId, profilePicture} = userObject;
     const error = blankErrors();
 
     let failed = false;
@@ -71,7 +71,7 @@ class Home extends React.Component{
       error.email = 'not valid email';
       failed = true;
     }
-    if(!/^$/.test(googleId)){
+    if(!/^\d+$/.test(googleId)){
       error.googleId = 'not valid googleId';
       failed = true;
     }
