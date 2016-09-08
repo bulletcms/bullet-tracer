@@ -46,6 +46,47 @@ class Home extends React.Component{
 
   }
 
+  validate(userObject){
+    const {username, name, lastName, fullName, email, googleId, profilePicture} = pageObject;
+    const error = blankErrors();
+
+    let failed = false;
+    if(!/^[a-zA-Z0-9_]+$/.test(username)){
+      error.username = 'must only contain alphanumeric and _';
+      failed = true;
+    }
+    if(!/^.+$/.test(name)){
+      error.name = 'must not contain any newline characters';
+      failed = true;
+    }
+    if(!/^.+$/.test(lastName)){
+      error.lastName = 'must not contain any newline characters';
+      failed = true;
+    }
+    if(!/^.+$/.test(fullName)){
+      error.fullName = 'must not contain any newline characters';
+      failed = true;
+    }
+    if(!/^\S+@\S+$/.test(email)){
+      error.email = 'not valid email';
+      failed = true;
+    }
+    if(!/^$/.test(googleId)){
+      error.googleId = 'not valid googleId';
+      failed = true;
+    }
+    if(!/^(http[s]?):\/\/(\S+?)((\/\w+)*\/)(\S+)$/.test(profilePicture)){
+      error.googleId = 'not valid url';
+      failed = true;
+    }
+
+    if(failed){
+      return [true, error];
+    } else {
+      return [false, error];
+    }
+  }
+
   render(){
     return <div>
       <h1>Home</h1>
