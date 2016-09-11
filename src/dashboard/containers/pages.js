@@ -8,8 +8,6 @@ import {fetchPageAction, newPageAction, fetchPagelistAction} from 'dashboard/red
 import {makeGetPage, getPageRequest, makeGetPagelist, getLogin, getLoginExpiresAt, getLoginValid} from 'dashboard/reducers/selectors';
 import {Input, Textarea, Modal} from 'views';
 
-const h = React.createElement;
-
 
 class PageDisplay extends React.Component {
   /**

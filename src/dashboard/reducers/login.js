@@ -1,7 +1,6 @@
 import Immutable from 'immutable';
 import {take, put, call, cps} from 'redux-saga/effects';
 import {takeLatest} from 'redux-saga';
-import {createSelector} from 'reselect';
 
 
 /////////////

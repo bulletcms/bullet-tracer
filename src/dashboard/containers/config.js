@@ -123,7 +123,6 @@ class Config extends React.Component{
   }
 
   render(){
-    const configlist = ['navigation'];
     return <div>
       <h1>Config</h1>
       {!this.props.config.loading && <div className="button-row">
