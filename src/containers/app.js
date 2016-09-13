@@ -6,7 +6,6 @@ import {fetchConfigAction} from 'reducers/actions';
 import {makeGetNav} from 'reducers/selectors';
 import {Navbar} from 'views';
 
-import 'bullet-flash';
 import 'styles/app.scss';
 
 

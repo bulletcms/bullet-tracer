@@ -1,7 +1,7 @@
 const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-const extractSass = new ExtractTextPlugin('style[name].css', {allChunks: false});
+const extractSass = new ExtractTextPlugin('style[name].css', {allChunks: true});
 
 module.exports = {
   context: path.resolve(__dirname, 'src'),
