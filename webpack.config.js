@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const extractSass = new ExtractTextPlugin('[name]style.css', {allChunks: true});
@@ -33,6 +34,16 @@ module.exports = {
     extensions: ['', '.js']
   },
   plugins: [
-    extractSass
+    extractSass,
+    new webpack.DefinePlugin({
+      'process.env':{
+        'NODE_ENV': JSON.stringify('production')
+      }
+    }),
+    new webpack.optimize.UglifyJsPlugin({
+      compress:{
+        warnings: true
+      }
+    })
   ]
 };
