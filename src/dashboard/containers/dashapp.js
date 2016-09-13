@@ -7,6 +7,7 @@ import {loginAction, logoutAction} from 'dashboard/reducers/actions';
 import {getLogin} from 'dashboard/reducers/selectors';
 import {Section, SidebarLayout} from 'views';
 
+import 'bullet-flash';
 import 'styles/dashboard.scss';
 
 

@@ -1,5 +1,4 @@
 const path = require('path');
-const nodeExternals = require('webpack-node-externals');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const extractSass = new ExtractTextPlugin('[name]style.css', {allChunks: true});
@@ -14,7 +13,8 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'lib'),
     filename: '[name].js',
-    libraryTarget: 'commonjs2'
+    libraryTarget: 'var',
+    library: 'Bullet'
   },
   module: {
     loaders: [
@@ -34,6 +34,5 @@ module.exports = {
   },
   plugins: [
     extractSass
-  ],
-  externals: [nodeExternals()]
+  ]
 };

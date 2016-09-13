@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build-test": "webpack --config webpack.test.config.js --watch -d --progress",
-    "build": "webpack -p --optimize-minimize --optimize-dedupe --optimize-max-chunks 1 --progress --colors",
+    "build": "webpack -p --optimize-dedupe --progress --colors",
     "start": "nodemon --harmony server.js",
     "dev": "concurrently -kr 'npm run build-test' 'npm run start'"
   },
