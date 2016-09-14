@@ -1,6 +1,6 @@
 {
   "name": "bullet-tracer",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "a web client for bulletcms",
   "main": "index.js",
   "scripts": {
