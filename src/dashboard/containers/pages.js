@@ -137,14 +137,8 @@ class Pages extends React.Component {
       error.title = 'must not contain any newline characters';
       failed = true;
     }
-    try {
-      const k = JSON.parse(tags);
-      if(!Array.isArray(k) || !(k.every((i)=>{return /^[a-z0-9]+$/.test(i);}))){
-        error.tags = 'each tag must only contain a-z 0-9';
-        failed = true;
-      }
-    } catch(err){
-      error.tags = 'not valid JSON';
+    if(!Array.isArray(tags) || !(tags.every((i)=>{return /^[a-z0-9]+$/.test(i);}))){
+      error.tags = 'each tag must only contain a-z 0-9';
       failed = true;
     }
     try {
